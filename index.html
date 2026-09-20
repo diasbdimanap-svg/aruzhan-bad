@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FATTOFF — комплекс для похудения и очищения организма</title>
+<meta name="description" content="FATTOFF — комплекс из двух препаратов для похудения и очищения организма. Рассчитайте ИМТ и получите консультацию специалиста для индивидуального подбора программы.">
+<meta property="og:title" content="FATTOFF — комплекс для похудения и очищения организма">
+<meta property="og:description" content="Комплексный подход к похудению и очищению организма. Рассчитайте ИМТ и получите консультацию специалиста.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#1F3B2C;
+    --green-mid:#2E5240;
+    --milk:#F4F1E9;
+    --white:#FFFFFF;
+    --blue-cold:#AFC8D3;
+    --graphite:#23261F;
+    --line:rgba(35,38,31,0.14);
+    --line-strong:rgba(35,38,31,0.55); /* для интерактивных элементов (рамки полей, точки карусели) — нужен контраст 3:1, а не 0.14 */
+    --radius-s:2px;
+    --radius-m:6px;
+    --maxw:1180px;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  @media(prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth;} }
+  /* Отступ якоря = высота sticky-шапки с запасом. Шапка ~83px, на 320px CTA переносится и она растёт до ~102px.
+     Если меняешь высоту шапки (.nav-row, .logo, CTA) — пересмотри это значение. */
+  section[id], footer[id]{scroll-margin-top:110px;}
+  body{
+    margin:0;
+    font-family:'Manrope',sans-serif;
+    color:var(--graphite);
+    background:var(--milk);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%; height:auto; display:block;} /* height:auto — иначе атрибут height фиксирует высоту при width:100% */
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  section{padding:96px 0;}
+  @media(max-width:720px){ section{padding:56px 0;} .wrap{padding:0 20px;} }
+
+  h1,h2,h3{margin:0; font-weight:700; letter-spacing:-0.01em;}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+  h2{font-size:clamp(28px,4vw,42px); line-height:1.1;}
+  h3{font-size:20px;}
+  p{margin:0;}
+
+  .kicker{
+    font-size:13px; font-weight:600; color:var(--green-mid);
+    letter-spacing:0.02em; margin-bottom:10px; display:block;
+  }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:15px 30px; border-radius:var(--radius-s);
+    font-weight:600; font-size:14.5px; letter-spacing:0.01em;
+    text-decoration:none; cursor:pointer; border:1px solid transparent;
+    transition:opacity .15s ease; font-family:inherit;
+  }
+  .btn:hover{opacity:0.86;}
+  .btn-primary{background:var(--green-deep); color:var(--white);}
+  .btn-on-dark{background:var(--white); color:var(--green-deep);}
+  .cta-short{display:none;}
+  @media(max-width:390px){ .nav-cta .cta-full{display:none;} .nav-cta .cta-short{display:inline;} }
+
+  /* ---------- IMAGE FRAMES ---------- */
+  .ph{border-radius:var(--radius-m); overflow:hidden; display:flex; align-items:center; justify-content:center;}
+  .ph img{width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:70; /* выше .sticky-cta (60), чтобы открытое меню не перекрывалось нижней панелью */
+    background:rgba(244,241,233,0.92); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding-block:18px; position:relative; gap:18px;}
+  .logo{font-size:20px; font-weight:800; letter-spacing:0.04em;}
+  nav.menu{display:flex; gap:26px; font-size:14px; font-weight:500;}
+  nav.menu a{text-decoration:none; opacity:0.85;}
+  nav.menu a:hover{opacity:1;}
+  .burger{display:none; font-size:22px; background:none; border:none; cursor:pointer; padding:4px 6px; line-height:1;}
+  /* 8 пунктов + лого + CTA с боковыми отступами помещаются в строку только от ~1040px */
+  @media(max-width:1059px){
+    nav.menu{
+      display:none; position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; gap:0; background:var(--milk);
+      border-bottom:1px solid var(--line); box-shadow:0 12px 24px rgba(35,38,31,0.1);
+      max-height:calc(100vh - 110px); overflow-y:auto; /* альбомные телефоны: 8 пунктов не влезают, даём прокрутку */
+    }
+    nav.menu.open{display:flex;}
+    nav.menu a{padding:15px 28px; border-top:1px solid var(--line); opacity:1;}
+    nav.menu a:first-child{border-top:none;}
+    .burger{display:block;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero-v2{
+    position:relative; overflow:hidden; color:var(--white);
+    padding:110px 0 64px;
+    background:
+      radial-gradient(ellipse 820px 620px at 12% 18%, rgba(94,138,113,0.45), transparent 60%),
+      radial-gradient(ellipse 760px 760px at 88% 82%, rgba(58,104,82,0.5), transparent 62%),
+      linear-gradient(160deg, #0E1E16 0%, #15301F 55%, #1F3B2C 100%);
+  }
+  .hero-v2::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 900px 500px at 50% 0%, rgba(0,0,0,0), rgba(0,0,0,0.28) 100%);
+  }
+  .hero-v2-inner{
+    position:relative; z-index:2; display:grid;
+    grid-template-columns:1fr 1fr; column-gap:56px; row-gap:32px;
+    grid-template-areas:"heading product" "cta product";
+    align-items:center;
+  }
+  @media(max-width:860px){
+    .hero-v2-inner{grid-template-columns:1fr; grid-template-areas:"heading" "product" "cta"; row-gap:28px;}
+  }
+  .hv-heading{grid-area:heading;}
+  .hv-product{grid-area:product;}
+  .hv-cta{grid-area:cta;}
+  .hero-v2 h1{
+    font-size:clamp(36px,5.4vw,58px); line-height:1.08; margin:0 0 18px; color:var(--white);
+    letter-spacing:-0.01em;
+  }
+  .hero-v2-sub{font-size:17px; max-width:42ch; opacity:0.82; margin:0;}
+  .hv-product{
+    background:var(--white); border-radius:20px; padding:16px;
+    box-shadow:0 40px 70px rgba(0,0,0,0.38);
+  }
+  .hv-product img{border-radius:12px; width:100%; display:block;}
+  .hero-cta{display:inline-flex; align-items:center; gap:8px;}
+  .hero-cta .arrow{display:inline-block; transition:transform .25s ease;}
+  .hero-cta:hover .arrow{transform:translateX(5px);}
+  .hero-trust{
+    position:relative; z-index:2; text-align:center; margin-top:64px;
+    font-size:12.5px; letter-spacing:0.18em; text-transform:uppercase; opacity:0.65;
+  }
+  @keyframes heroFade{from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);}}
+  .hero-anim{opacity:0; animation:heroFade .85s ease forwards;}
+  .hv-product.hero-anim{animation-delay:.05s;}
+  .hv-heading.hero-anim{animation-delay:.28s;}
+  .hv-cta.hero-anim{animation-delay:.5s;}
+  .hero-trust.hero-anim{animation-delay:.7s;}
+  @media(prefers-reduced-motion:reduce){ .hero-anim{animation:none; opacity:1;} }
+
+  /* ---------- 2-PRODUCT BLOCK ---------- */
+  .products{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:44px;}
+  @media(max-width:800px){ .products{grid-template-columns:1fr;} }
+  .product-card{background:var(--white); border-radius:var(--radius-m); padding:32px; border:1px solid var(--line);}
+  .product-card .ph{aspect-ratio:896/1200; margin-bottom:22px;}
+  @media(max-width:800px){ .product-card .ph{max-height:65vh;} } /* портретное фото в одну колонку иначе растягивает секцию на весь экран */
+  .product-card .num{font-family:'Newsreader',serif; font-style:italic; font-size:15px; color:var(--green-mid); margin-bottom:8px; display:block;}
+  .product-card ul{margin:14px 0 0; padding-left:18px; font-size:15px; opacity:0.85;}
+  .product-card li{margin-bottom:6px;}
+  .tag-result{
+    display:inline-block; margin-top:16px; font-size:12.5px; font-weight:700;
+    color:var(--green-deep); border:1px solid var(--green-deep); padding:5px 11px; border-radius:20px;
+  }
+
+  /* ---------- FORMULA SCHEME ---------- */
+  .formula{background:var(--green-deep); color:var(--white); border-radius:var(--radius-m); text-align:center; padding:64px 32px;}
+  @media(max-width:720px){ .formula{padding:44px 20px;} }
+  .formula h2{color:var(--white);}
+  .formula-steps{display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; margin:40px 0;}
+  .formula-step{
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22);
+    padding:16px 22px; border-radius:var(--radius-s); font-weight:600; font-size:15px;
+  }
+  .formula-arrow{opacity:0.5; font-size:18px;}
+  @media(max-width:700px){ .formula-steps{flex-direction:column;} .formula-arrow{transform:rotate(90deg);} }
+
+  /* ---------- TWO COL TEXT+PH ---------- */
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  @media(max-width:800px){ .split{grid-template-columns:1fr;} }
+  .split.reverse .ph{order:2;}
+  @media(max-width:800px){ .split.reverse .ph{order:0;} }
+
+  /* ---------- FULLSCREEN 4-POINT ---------- */
+  .comfort{background:var(--graphite); color:var(--white);}
+  .comfort h2{color:var(--white); text-align:center; margin-bottom:48px;}
+  .comfort-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:rgba(255,255,255,0.12);}
+  .comfort-item{background:var(--graphite); padding:36px 22px; text-align:center;}
+  .comfort-item .x{font-family:'Newsreader',serif; font-style:italic; font-size:30px; color:var(--blue-cold); margin-bottom:10px;}
+  @media(max-width:800px){ .comfort-grid{grid-template-columns:1fr 1fr;} }
+  @media(max-width:480px){ .comfort-grid{grid-template-columns:1fr;} }
+
+  /* ---------- CARD GRID (how it works / benefits) ---------- */
+  .cards6{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:40px;}
+  @media(max-width:800px){ .cards6{grid-template-columns:1fr 1fr;} }
+  @media(max-width:520px){ .cards6{grid-template-columns:1fr;} }
+  .card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m); padding:26px;}
+  .card .ph{aspect-ratio:1/1; margin-bottom:14px;}
+
+  /* ---------- NUMBER ONE ---------- */
+  .n1{text-align:center;}
+  .n1 .ph{aspect-ratio:896/1200; max-width:420px; margin:36px auto 0;}
+
+  /* ---------- TIMELINE 4 WEEKS ---------- */
+  .timeline{display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:44px;}
+  @media(max-width:900px){ .timeline{grid-template-columns:1fr 1fr;} }
+  @media(max-width:380px){ .timeline{grid-template-columns:1fr;} } /* было 520px — расширили диапазон 2 колонок на большинство телефонов в портрете */
+  .tl-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;}
+  .tl-card .ph{aspect-ratio:400/933; border-radius:0; max-height:58vh;} /* кадр 400/933 очень высокий — капаем и кадрируем по верху, а не растягиваем секцию */
+  .tl-card .ph img{object-position:top;}
+  @media(max-width:520px){ .tl-card .ph{aspect-ratio:3/4;} }
+  .tl-body{padding:22px;}
+  .tl-week{font-family:'Newsreader',serif; font-style:italic; color:var(--green-mid); font-size:14px;}
+  .tl-body h3{margin:6px 0 10px; font-size:16.5px;}
+  .tl-body ul{padding-left:16px; margin:10px 0 0; font-size:13.5px; opacity:0.8;}
+  .tl-loss{display:inline-block; margin-top:12px; font-weight:800; font-size:15px; color:var(--green-deep);}
+
+  /* ---------- INGREDIENTS 3 CARDS ---------- */
+  .ingredients{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:40px;}
+  @media(max-width:700px){ .ingredients{grid-template-columns:1fr 1fr;} } /* 2 колонки вместо 1 — короче на узких/альбомных экранах */
+  @media(max-width:460px){ .ingredients{grid-template-columns:1fr;} }
+
+  /* ---------- BENEFITS GRID (list, not photos) ---------- */
+  .benefits-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:36px;}
+  @media(max-width:800px){ .benefits-grid{grid-template-columns:1fr 1fr;} }
+  .benefit-item{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-s); padding:18px; font-size:14px; font-weight:600;}
+
+  /* ---------- 4 BIG ADVANTAGES ---------- */
+  .adv4{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:40px;}
+  @media(max-width:700px){ .adv4{grid-template-columns:1fr;} }
+  .adv-item{background:rgba(175,200,211,0.28); border-radius:var(--radius-m); padding:28px;}
+  .adv-item h3{font-size:18px; max-width:28ch;}
+
+  /* ---------- MAIN ADVANTAGE (big statement block) ---------- */
+  .main-adv{background:var(--milk); border:2px solid var(--green-deep); border-radius:var(--radius-m); text-align:center; padding:64px 28px;}
+  .main-adv h2{max-width:16ch; margin:0 auto 8px;}
+  .main-adv .line{font-size:19px; font-weight:600; margin-top:18px; color:var(--green-deep);}
+
+  /* ---------- SELECTION PROCESS (5 steps vertical/horizontal) ---------- */
+  .process{display:flex; flex-direction:column; gap:0; max-width:520px; margin:44px auto 0;}
+  .process-step{display:flex; gap:18px; align-items:flex-start; padding:18px 0; border-bottom:1px solid var(--line);}
+  .process-step:last-child{border-bottom:none;}
+  .process-num{font-family:'Newsreader',serif; font-style:italic; font-size:26px; color:var(--green-mid); width:44px; flex-shrink:0;}
+  .process-step h3{font-size:16px;}
+
+  /* ---------- BMI CALCULATOR ---------- */
+  .calc-box{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m); padding:40px; max-width:520px; margin:0 auto;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; font-weight:600; margin-bottom:6px; opacity:0.75;}
+  .field input{
+    width:100%; padding:13px 14px; border:1px solid var(--line-strong); border-radius:var(--radius-s);
+    font-family:inherit; font-size:16px; background:var(--milk); /* <16px iOS Safari зумит страницу при фокусе */
+  }
+  /* :user-invalid — подсветка только после ввода/отправки, а не при открытии пустой формы */
+  .field input:user-invalid{border-color:#B4483E;}
+  .calc-result{margin-top:20px; padding:18px; border-radius:var(--radius-s); background:rgba(175,200,211,0.3); display:none; font-size:14.5px;}
+  .calc-result strong{font-size:22px; display:block; margin-bottom:4px;}
+
+  /* ---------- ABOUT / PHILOSOPHY ---------- */
+  .about-meta{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:32px; font-size:14px;}
+  @media(max-width:600px){ .about-meta{grid-template-columns:1fr;} }
+  .about-meta .box{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-s); padding:18px;}
+  .about-meta .box b{display:block; margin-bottom:6px;}
+
+  .philosophy-row{display:flex; gap:16px; justify-content:center; margin-top:40px; flex-wrap:wrap;}
+  .philosophy-pill{background:var(--green-deep); color:var(--white); padding:14px 28px; border-radius:30px; font-weight:600;}
+
+  /* ---------- FOUNDER ---------- */
+  .founder-grid{display:grid; grid-template-columns:0.8fr 1.2fr; gap:52px; align-items:start;}
+  @media(max-width:800px){ .founder-grid{grid-template-columns:1fr;} }
+  .founder-ph{aspect-ratio:888/1057;}
+  .founder-name{font-size:26px; font-weight:800; margin-top:18px;}
+  .founder-role{font-size:14px; opacity:0.75; margin-top:2px;}
+  .founder-blocks{display:grid; grid-template-columns:1fr; gap:22px; margin-top:8px;}
+  .founder-blocks .box{border-left:2px solid var(--green-deep); padding-left:16px;}
+  .founder-blocks h3{font-size:15px; margin-bottom:8px;}
+  .founder-blocks p{font-size:15px; opacity:0.75; line-height:1.55;}
+
+  /* ---------- REVIEWS CAROUSEL ---------- */
+  .rev-carousel{display:flex; align-items:center; gap:14px; margin-top:36px;}
+  .rev-track{
+    display:flex; overflow-x:auto; scroll-snap-type:x mandatory; flex:1;
+    border-radius:var(--radius-m); background:var(--milk); scrollbar-width:none;
+  }
+  .rev-track::-webkit-scrollbar{display:none;}
+  .rev-slide{flex:0 0 100%; scroll-snap-align:center; display:flex; justify-content:center; align-items:center; padding:18px;}
+  /* высота задана явно, а не max-height: у ленивой картинки до загрузки нет размера,
+     и без определённой высоты трек схлопывался до 36px, а потом прыгал на 640px под пользователем */
+  .rev-slide img{height:min(640px, 70vh); width:auto; max-width:100%; object-fit:contain; display:block; border-radius:4px;} /* 70vh — альбомные телефоны шире 640px, но низкие */
+  .rev-nav{
+    flex:0 0 auto; width:44px; height:44px; border-radius:50%; border:1px solid var(--line);
+    background:var(--white); font-size:20px; line-height:1; cursor:pointer; display:flex;
+    align-items:center; justify-content:center; transition:background .15s ease;
+  }
+  .rev-nav:hover{background:var(--milk);}
+  .rev-dots{display:flex; justify-content:center; gap:0; margin-top:12px;}
+  /* кнопка 24×24 (минимум для тача), видимая точка 8×8 внутри */
+  .rev-dot{width:24px; height:24px; position:relative; background:none; border:none; padding:0; cursor:pointer;}
+  .rev-dot::before{content:""; position:absolute; inset:8px; border-radius:50%; background:var(--line-strong);}
+  .rev-dot.active::before{background:var(--green-deep);}
+  @media(max-width:640px){ .rev-nav{display:none;} }
+
+  /* ---------- BEFORE/AFTER ---------- */
+  .degree-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:40px;}
+  @media(max-width:800px){ .degree-grid{grid-template-columns:1fr;} }
+  .degree-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m); padding:28px;}
+  .degree-icon{width:180px; height:180px; border-radius:50%; overflow:hidden; margin:0 auto 18px;}
+  .degree-icon img{width:100%; height:100%; object-fit:cover; display:block;}
+  .degree-range{font-size:34px; font-weight:800; color:var(--green-deep); margin:10px 0 12px;}
+  .degree-card p{font-size:14.5px; opacity:0.75;}
+  .degree-disclaimer{margin-top:28px; font-size:13px; opacity:0.65; max-width:70ch;}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{border-bottom:1px solid var(--line); padding:20px 0;}
+  .faq-q{display:flex; justify-content:space-between; align-items:center; font-weight:700; cursor:pointer; font-size:15.5px;}
+  .faq-q .sign{transition:transform .15s ease;}
+  .faq-q[aria-expanded="true"] .sign{transform:rotate(45deg);}
+  .faq-a{font-size:14.5px; opacity:0.75; margin-top:10px; max-width:60ch;}
+
+  /* ---------- DOCUMENTS ---------- */
+  .docs-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:36px;}
+  @media(max-width:700px){ .docs-grid{grid-template-columns:1fr 1fr;} }
+  @media(max-width:480px){ .docs-grid{grid-template-columns:1fr;} }
+  .doc-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-s); padding:20px; text-align:center; font-size:13.5px; font-weight:700;}
+  .doc-card .ph{aspect-ratio:3/4; margin-bottom:12px;}
+
+  /* ---------- FINAL CTA ---------- */
+  .final{background:var(--graphite); color:var(--white); text-align:center;}
+  .final h2{color:var(--white); max-width:18ch; margin:0 auto 30px;}
+
+  /* ---------- MODAL FORM ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(23,26,20,0.55); display:none;
+    justify-content:center; z-index:100; padding:20px; overflow-y:auto;
+  }
+  .modal-overlay.open{display:flex;}
+  /* margin:auto вместо align-items:center — форма выше экрана прокручивается, а не обрезается */
+  .modal{background:var(--white); border-radius:var(--radius-m); padding:36px 36px 28px; max-width:420px; width:100%; position:relative; margin:auto;}
+  @media(max-width:520px){ .modal{padding:28px 20px 20px;} .modal-overlay{padding:12px;} }
+  .modal-close{position:absolute; top:14px; right:16px; background:none; border:none; font-size:20px; cursor:pointer; line-height:1; padding:6px 10px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--green-deep); color:rgba(255,255,255,0.82); font-size:13.5px; padding:56px 0 90px;}
+  .footer-grid{display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; gap:32px;}
+  @media(max-width:800px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+  @media(max-width:480px){ .footer-grid{grid-template-columns:1fr;} }
+  footer h4{color:var(--white); font-size:13px; margin-bottom:14px; font-weight:700;}
+  footer .flogo{color:var(--white); font-size:19px; font-weight:800; margin-bottom:10px;}
+  footer a{text-decoration:none; opacity:0.85; display:block; margin-bottom:8px;}
+  footer a:hover{opacity:1;}
+
+  /* ---------- STICKY MOBILE CTA ---------- */
+  .sticky-cta{
+    position:fixed; bottom:0; left:0; right:0; z-index:60;
+    background:var(--green-deep); padding:12px 16px; text-align:center; display:none;
+  }
+  .sticky-cta .btn{width:100%;}
+  @media(max-width:720px){ .sticky-cta{display:block;} body{padding-bottom:84px;} }
+</style>
+</head>
+<body>
+
+<!-- ============ 01. HEADER ============ -->
+<header>
+  <div class="wrap nav-row">
+    <div class="logo">FATTOFF</div>
+    <nav class="menu" id="mainMenu">
+      <a href="#product">О комплексе</a>
+      <a href="#how">Как действует</a>
+      <a href="#weeks">4 недели</a>
+      <a href="#composition">Состав</a>
+      <a href="#about">О нас</a>
+      <a href="#founder">Основатель</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#calc" class="btn btn-primary nav-cta" style="font-size:13px; padding:12px 20px;"><span class="cta-full">Получить расчёт ИМТ</span><span class="cta-short">Расчёт ИМТ</span></a>
+    <button class="burger" id="burgerBtn" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainMenu">☰</button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ 02. HERO ============ -->
+<section class="hero-v2">
+  <div class="wrap hero-v2-inner">
+    <div class="hv-heading hero-anim">
+      <h1>ПРАВИЛЬНЫЙ ПУТЬ<br>К ТЕЛУ МЕЧТЫ</h1>
+      <p class="hero-v2-sub">Комплексный подход к снижению веса и очищению организма.</p>
+    </div>
+    <div class="hv-product hero-anim"><img src="img/hero-product.jpg" alt="Капсулы FATTOFF и Комплексное очищение FATTOFF" width="896" height="1200" decoding="async"></div>
+    <div class="hv-cta hero-anim">
+      <a href="#how" class="btn btn-on-dark hero-cta">Узнать больше информации о продукте <span class="arrow">→</span></a>
+    </div>
+  </div>
+  <div class="hero-trust hero-anim">FATTOFF SYSTEM</div>
+</section>
+
+<!-- ============ 03. ДВА ПРЕПАРАТА ============ -->
+<section id="product">
+  <div class="wrap">
+    <h2>Комплекс FATTOFF</h2>
+    <div class="products">
+      <div class="product-card">
+        <div class="ph"><img src="img/capsules.jpg" alt="Капсулы FATTOFF" width="896" height="1200" decoding="async" loading="lazy"></div>
+        <span class="num">01 / БАДы</span>
+        <h3>Капсулы для похудения</h3>
+        <p style="font-size:15px; opacity:0.8; margin-top:8px;">БАДы в капсулах. ИМТ рассчитывается индивидуально, продукт прописывается по назначению специалиста.</p>
+      </div>
+      <div class="product-card">
+        <div class="ph"><img src="img/cleanse.jpg" alt="Упаковка Комплексное очищение" width="896" height="1200" decoding="async" loading="lazy"></div>
+        <span class="num">02 / Очищение</span>
+        <h3>Комплексное очищение</h3>
+        <p style="font-size:15px; opacity:0.8; margin-top:8px;">Очищение организма и ЖКТ.</p>
+        <ul>
+          <li>восстановление иммунной системы</li>
+          <li>чистка от паразитов</li>
+          <li>комплексная программа очищения</li>
+        </ul>
+        <span class="tag-result">Результат за несколько применений</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04. ФОРМУЛА ============ -->
+<section id="how">
+  <div class="wrap formula">
+    <h2>Почему FATTOFF работает комплексно?</h2>
+    <p style="max-width:44ch; margin:14px auto 0; opacity:0.85;">Два препарата комплексно прописываются для быстрого результата.</p>
+    <div class="formula-steps">
+      <div class="formula-step">Очищение</div>
+      <span class="formula-arrow">→</span>
+      <div class="formula-step">Активация процессов</div>
+      <span class="formula-arrow">→</span>
+      <div class="formula-step">Жиросжигание</div>
+      <span class="formula-arrow">→</span>
+      <div class="formula-step">Контроль веса</div>
+    </div>
+    <a href="#calc" class="btn btn-on-dark">Получить расчёт ИМТ</a>
+  </div>
+</section>
+
+<!-- ============ 05. БАДЫ FATTOFF ============ -->
+<section>
+  <div class="wrap split">
+    <div>
+      <span class="kicker">БАДы в комплексе</span>
+      <p style="font-size:15px; opacity:0.8;">Активизируют процесс сжигания жира, укрепляют иммунитет, стимулируют питание сердечной мышцы.</p>
+      <h2 style="margin-top:16px;">FATTOFF — мощный жиросжигатель и энергетик</h2>
+      <p style="margin-top:16px; font-size:15px; opacity:0.8;">Повышает выносливость, эффективно снижает уровень холестерина в крови и способствует усиленному жировому обмену при физических нагрузках.</p>
+      <p style="margin-top:12px; font-size:15px; opacity:0.8;">Безопасный и надёжный помощник в избавлении от лишнего веса.</p>
+    </div>
+    <div class="ph" style="aspect-ratio:768/1376;"><img src="img/capsule-texture.jpg" alt="Капсулы крупным планом" width="768" height="1376" decoding="async" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- ============ 06. КОМФОРТНОЕ ПОХУДЕНИЕ ============ -->
+<section class="comfort">
+  <div class="wrap">
+    <h2>Самое комфортное похудение</h2>
+    <div class="comfort-grid">
+      <div class="comfort-item"><div class="x">без</div>голода</div>
+      <div class="comfort-item"><div class="x">без</div>ограничений в питании</div>
+      <div class="comfort-item"><div class="x">без</div>физических упражнений</div>
+      <div class="comfort-item"><div class="x">без</div>вреда для здоровья</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07. КАК РАБОТАЕТ ПРЕПАРАТ ============ -->
+<section>
+  <div class="wrap">
+    <span class="kicker">Принцип действия</span>
+    <h2>Как работает FATTOFF</h2>
+    <p style="max-width:60ch; margin-top:14px; font-size:15px; opacity:0.8;">Принцип действия основан на возможностях нашего организма получать энергию не только от углеводов, но из жира.</p>
+    <div class="cards6">
+      <div class="card"><div class="ph"><img src="img/how-sugar.jpg" alt="Нормализация сахара в крови" width="1100" height="1100" decoding="async" loading="lazy"></div><h3>Нормализация сахара в крови</h3></div>
+      <div class="card"><div class="ph"><img src="img/how-heart.jpg" alt="Польза для сердца и сосудов" width="1100" height="1100" decoding="async" loading="lazy"></div><h3>Польза для сердца и сосудов</h3></div>
+      <div class="card"><div class="ph"><img src="img/how-skin.jpg" alt="Улучшение состояния кожи и волос" width="1100" height="1100" decoding="async" loading="lazy"></div><h3>Улучшение состояния кожи и волос</h3></div>
+      <div class="card"><div class="ph"><img src="img/how-cellulite.jpg" alt="Разравнивает целлюлит" width="1100" height="1100" decoding="async" loading="lazy"></div><h3>Разравнивает целлюлит</h3></div>
+      <div class="card"><div class="ph"><img src="img/how-detox.jpg" alt="Детокс на клеточном уровне" width="1100" height="1100" decoding="async" loading="lazy"></div><h3>Стимулирует активное очищение и детокс на клеточном уровне</h3></div>
+      <div class="card"><div class="ph"><img src="img/how-water.jpg" alt="Нормализует водно-солевой баланс" width="1100" height="1100" decoding="async" loading="lazy"></div><h3>Нормализует водно-солевой баланс и избавляет от отёков</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08. №1 В СНГ ============ -->
+<section>
+  <div class="wrap n1">
+    <h2>№1 препарат по похудению в СНГ</h2>
+    <p style="margin-top:10px; opacity:0.8;">Комплексный подход к похудению и очищению организма.</p>
+    <div class="ph"><img src="img/composition.jpg" alt="Упаковка FATTOFF" width="896" height="1200" decoding="async" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- ============ 09. 4 НЕДЕЛИ ============ -->
+<section id="weeks">
+  <div class="wrap">
+    <h2>Как меняется организм</h2>
+    <div class="timeline">
+      <div class="tl-card">
+        <div class="ph"><img src="img/week1.jpg" alt="Неделя 1" width="404" height="933" decoding="async" loading="lazy"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 1</span>
+          <h3>Перестройка организма на активное жиросжигание</h3>
+          <span class="tl-loss">−2 кг</span>
+          <ul><li>снижение аппетита</li><li>снижение чувства голода</li></ul>
+        </div>
+      </div>
+      <div class="tl-card">
+        <div class="ph"><img src="img/week2.jpg" alt="Неделя 2" width="391" height="933" decoding="async" loading="lazy"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 2</span>
+          <h3>Запуск жиросжигания в области живота</h3>
+          <span class="tl-loss">−4 кг</span>
+          <ul><li>вес начинает уходить быстро</li><li>появляется много энергии</li><li>улучшается настроение</li></ul>
+        </div>
+      </div>
+      <div class="tl-card">
+        <div class="ph"><img src="img/week3.jpg" alt="Неделя 3" width="396" height="933" decoding="async" loading="lazy"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 3</span>
+          <h3>Активное жиросжигание во всех участках тела</h3>
+          <span class="tl-loss">−7 кг</span>
+          <ul><li>заметные результаты каждый день</li><li>уходит жир с проблемных мест</li></ul>
+        </div>
+      </div>
+      <div class="tl-card">
+        <div class="ph"><img src="img/week4.jpg" alt="Неделя 4" width="400" height="933" decoding="async" loading="lazy"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 4</span>
+          <h3>Заметная стройность</h3>
+          <span class="tl-loss">−10 кг</span>
+          <ul><li>очерчивание талии</li><li>похудение в лице</li><li>здоровые пищевые привычки</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. КОМПЛЕКСНОЕ ОЧИЩЕНИЕ ============ -->
+<section id="composition">
+  <div class="wrap split reverse">
+    <div class="ph" style="aspect-ratio:896/1200;"><img src="img/cleanse-herbs.jpg" alt="Упаковка Комплексное очищение на фоне трав и масла" width="896" height="1200" decoding="async" loading="lazy"></div>
+    <div>
+      <span class="kicker">Комплексное очищение от FATTOFF</span>
+      <h2>Очищение, похудение, борьба с паразитами</h2>
+      <p style="margin-top:16px; font-size:15px; opacity:0.8;">Предназначен и разработан для очистки организма, похудения и избавления от паразитов в организме человека.</p>
+      <p style="margin-top:12px; font-size:15px; opacity:0.8;">В состав входят исключительно натуральные компоненты: чёрный тмин, оливковое масло и сенна (слабительное). Продукт получил широкое применение и собрал большое количество положительных отзывов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. СОСТАВ ОЧИЩЕНИЯ ============ -->
+<section>
+  <div class="wrap">
+    <h2>Состав очищения</h2>
+    <div class="ingredients">
+      <div class="card">
+        <div class="ph"><img src="img/ing-cumin.jpg" alt="Чёрный тмин" width="1200" height="1200" decoding="async" loading="lazy"></div>
+        <h3>Чёрный тмин</h3>
+        <p style="font-size:15px; opacity:0.75; margin-top:8px;">Источник природных антиоксидантов, традиционно используется для поддержки пищеварения и общего тонуса организма.</p>
+      </div>
+      <div class="card">
+        <div class="ph"><img src="img/ing-olive.jpg" alt="Оливковое масло" width="1200" height="1200" decoding="async" loading="lazy"></div>
+        <h3>Оливковое масло</h3>
+        <p style="font-size:15px; opacity:0.75; margin-top:8px;">Мягко смягчает работу ЖКТ и способствует естественному очищению, богато ненасыщенными жирными кислотами.</p>
+      </div>
+      <div class="card">
+        <div class="ph"><img src="img/ing-senna.jpg" alt="Сенна" width="1200" height="1200" decoding="async" loading="lazy"></div>
+        <h3>Сенна</h3>
+        <p style="font-size:15px; opacity:0.75; margin-top:8px;">Растительный компонент с мягким слабительным действием, помогает наладить регулярную работу кишечника.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. ПОЛЬЗА ОТ ПРИМЕНЕНИЯ ============ -->
+<section>
+  <div class="wrap">
+    <h2>Польза от применения</h2>
+    <div class="benefits-grid">
+      <div class="benefit-item">При хронических запорах</div>
+      <div class="benefit-item">При ослаблении иммунитета</div>
+      <div class="benefit-item">Избавление от паразитов</div>
+      <div class="benefit-item">При похудении</div>
+      <div class="benefit-item">Очистка кишечника от шлаков</div>
+      <div class="benefit-item">Профилактика, поднятие тонуса</div>
+      <div class="benefit-item">Для лечения печени</div>
+      <div class="benefit-item">Головные боли</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. ОРГАНИЧЕСКИЕ БОБЫ ============ -->
+<section>
+  <div class="wrap">
+    <span class="kicker">Органические бобы</span>
+    <h2>Мировой хит в области диетологии</h2>
+    <p style="max-width:60ch; margin-top:14px; font-size:15px; opacity:0.8;">Принцип действия основан на возможностях нашего организма получать энергию не только из углеводов, но и из жира.</p>
+    <div class="adv4">
+      <div class="adv-item"><h3>Запуск активного жиросжигания сразу после приёма</h3></div>
+      <div class="adv-item"><h3>Борется с самым «вредным» жиром — висцеральным</h3></div>
+      <div class="adv-item"><h3>До 10 кг похудения в месяц без диет и нагрузок</h3></div>
+      <div class="adv-item"><h3>Признание в мировой диетологии</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. КЛИНИЧЕСКИЕ ИССЛЕДОВАНИЯ ============ -->
+<section style="text-align:center;">
+  <div class="wrap">
+    <h2>Клинические исследования показали</h2>
+    <p style="max-width:52ch; margin:16px auto 0; opacity:0.8;">Клинические исследования показали, что при их приёме вес начинает уходить стремительно и со 100% эффективностью.</p>
+    <a href="#documents" class="btn btn-primary" style="margin-top:26px;">Смотреть документы</a>
+    <!-- TILDA: когда появится PDF клинических исследований — открывать его в popup вместо якоря на #documents -->
+  </div>
+</section>
+
+<!-- ============ 15. ГЛАВНОЕ ПРЕИМУЩЕСТВО ============ -->
+<section>
+  <div class="wrap">
+    <div class="main-adv">
+      <span class="kicker">Наше главное преимущество</span>
+      <h2>Мы не просто продаём препарат</h2>
+      <div class="line">Сначала мы рассчитываем ИМТ</div>
+      <div class="line">Определяем степень ожирения</div>
+      <div class="line">Проводим консультацию</div>
+      <div class="line">И только после прописываем продукт</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. КАК МЫ ПОДБИРАЕМ КОМПЛЕКС ============ -->
+<section>
+  <div class="wrap split">
+    <div class="ph" style="aspect-ratio:4/5;"><img src="img/consultation.jpg" alt="Консультация специалиста FATTOFF" width="1200" height="1800" decoding="async" loading="lazy"></div>
+    <div>
+      <h2>Как мы подбираем комплекс</h2>
+      <div class="process" style="text-align:left;">
+        <div class="process-step"><span class="process-num">01</span><h3>Расчёт ИМТ</h3></div>
+        <div class="process-step"><span class="process-num">02</span><h3>Определение степени ожирения</h3></div>
+        <div class="process-step"><span class="process-num">03</span><h3>Консультация специалиста</h3></div>
+        <div class="process-step"><span class="process-num">04</span><h3>Подбор продукта</h3></div>
+        <div class="process-step"><span class="process-num">05</span><h3>Прописываем комплекс</h3></div>
+      </div>
+      <a href="#calc" class="btn btn-primary" style="margin-top:32px;">Получить расчёт ИМТ</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. КАЛЬКУЛЯТОР ИМТ ============ -->
+<section id="calc" style="background:var(--white);">
+  <div class="wrap" style="text-align:center;">
+    <h2>Получить расчёт ИМТ</h2>
+    <div class="calc-box">
+      <form id="bmiForm" novalidate>
+        <div class="field"><label for="age">Возраст</label><input type="number" id="age" name="age" min="10" max="100" required placeholder="напр. 34"></div>
+        <div class="field"><label for="height">Рост, см</label><input type="number" id="height" name="height" min="100" max="230" required placeholder="напр. 168" step="any"></div>
+        <div class="field"><label for="weight">Вес, кг</label><input type="number" id="weight" name="weight" min="30" max="300" required placeholder="напр. 82" step="any"></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;">Получить расчёт ИМТ</button>
+      </form>
+      <p id="calcAnnounce" class="sr-only" role="status" aria-live="polite"></p>
+      <div class="calc-result" id="calcResult">
+        <strong id="bmiVal">—</strong>
+        <span id="bmiCategory">Степень — —</span>
+        <p style="margin-top:12px; opacity:0.8;">Для определения подходящего продукта необходимо пройти консультацию специалиста.</p>
+        <button class="btn btn-primary" style="margin-top:14px; width:100%;" type="button" onclick="openModal('Получить консультацию')">Получить консультацию</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18. ПЕРСОНАЛЬНЫЙ ПОДБОР ============ -->
+<section style="text-align:center;">
+  <div class="wrap">
+    <h2>Каждому — свой подход</h2>
+    <p style="max-width:52ch; margin:16px auto 0; opacity:0.8;">После расчёта ИМТ и консультации специалист определяет, какой продукт подходит именно вам и как его использовать в рамках комплексной программы.</p>
+    <a href="#calc" class="btn btn-primary" style="margin-top:24px;">Подобрать мой комплекс</a>
+  </div>
+</section>
+
+<!-- ============ 19. О НАС ============ -->
+<section id="about">
+  <div class="wrap">
+    <span class="kicker">О нас</span>
+    <h2>FATTOFF — ребрендинг в Казахстане</h2>
+    <p style="max-width:60ch; margin-top:14px; font-size:15px; opacity:0.8;">FATTOFF — ребрендинг проекта для рынка Казахстана. Бренд объединяет комплексный подход к похудению, очищению организма и работе с ЖКТ.</p>
+    <div class="about-meta">
+      <div class="box"><b>Производство — Германия</b>Weingut Heitlinger GmbH<br>Am Mühlberg 3, D-76684 Östringen-Tiefenbach</div>
+      <div class="box"><b>Казахстан</b>АО STORM<br>г. Алматы, Республика Казахстан</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 20. ФИЛОСОФИЯ ============ -->
+<section style="text-align:center; background:var(--white);">
+  <div class="wrap">
+    <h2>Наша цель — помочь человеку прийти к результату</h2>
+    <div class="philosophy-row">
+      <div class="philosophy-pill">Похудение</div>
+      <div class="philosophy-pill">Очищение</div>
+      <div class="philosophy-pill">Здоровые привычки</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 21. ОСНОВАТЕЛЬ ============ -->
+<section id="founder">
+  <div class="wrap">
+    <span class="kicker">Основатель FATTOFF</span>
+    <div class="founder-grid">
+      <div>
+        <div class="ph founder-ph"><img src="img/founder.jpg" alt="Основатель FATTOFF" width="888" height="1057" decoding="async" loading="lazy"></div>
+        <h2 class="founder-name">Аружан Мақсатқызы</h2>
+        <div class="founder-role">25 лет · Основатель и амбассадор FATTOFF</div>
+        <span class="tag-result" style="margin-top:14px;">−32 кг за 3 месяца — личный результат</span>
+      </div>
+      <div class="founder-blocks">
+        <div class="box">
+          <h3>О себе</h3>
+          <p>Я — предприниматель, маркетолог и создатель проектов в сфере digital, красоты и wellness. Занимаюсь развитием брендов, созданием продуктов и выстраиванием проектов, которые помогают людям менять качество своей жизни.</p>
+          <p style="margin-top:10px;">FATTOFF для меня — не просто продукт для снижения веса. Это проект, который появился из моего собственного опыта и желания создать более понятный и персонализированный путь к трансформации.</p>
+          <p style="margin-top:10px;">За 3 месяца я лично снизила вес на 32 кг. Я знаю, каково это — начинать с большого количества лишнего веса, проходить через изменения тела, образа жизни и отношения к себе.</p>
+          <p style="margin-top:10px;">Именно поэтому в FATTOFF мы сделали акцент не на универсальном подходе, а на индивидуальном подборе: расчёт ИМТ → определение степени ожирения → консультация → подбор комплекса.</p>
+        </div>
+        <div class="box">
+          <h3>Моя цель</h3>
+          <p>Показать женщинам, что изменение тела — это не наказание и не отказ от жизни. Это возможность снова почувствовать себя уверенной, красивой и свободной.</p>
+          <p style="margin-top:10px;">Я прошла этот путь сама. Теперь хочу помочь пройти его другим женщинам.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:48px; margin-bottom:6px;">Мой путь в фото</h3>
+    <p style="font-size:15px; opacity:0.7; margin-bottom:8px;">До и после — реальные фото Аружан на разных этапах трансформации.</p>
+    <div class="rev-carousel">
+      <button class="rev-nav founder-prev" type="button" aria-label="Предыдущее фото">‹</button>
+      <div class="rev-track" id="founderTrack">
+        <div class="rev-slide"><img src="img/founder-transform-1.jpg" alt="Аружан — до и после, фото 1" width="1000" height="1776" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/founder-transform-2.jpg" alt="Аружан — до и после, фото 2" width="1000" height="1776" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/founder-transform-3.jpg" alt="Аружан — до и после, фото 3" width="1000" height="1776" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/founder-transform-4.jpg" alt="Аружан — до и после, фото 4" width="1000" height="1776" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/founder-transform-5.jpg" alt="Аружан — до и после, фото 5" width="1000" height="1776" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/founder-transform-6-combined.jpg" alt="Аружан — до и после, фото 6" width="1000" height="1777" decoding="async" loading="lazy"></div>
+      </div>
+      <button class="rev-nav founder-next" type="button" aria-label="Следующее фото">›</button>
+    </div>
+    <div class="rev-dots" id="founderDots"></div>
+
+    <a href="#calc" class="btn btn-primary" style="margin-top:32px;">Получить расчёт ИМТ</a>
+  </div>
+</section>
+
+<!-- ============ 22. ОТЗЫВЫ ============ -->
+<section id="reviews" style="background:var(--white);">
+  <div class="wrap">
+    <h2>Реальные отзывы клиентов FATTOFF</h2>
+    <div class="rev-carousel">
+      <button class="rev-nav rev-prev" type="button" aria-label="Предыдущий отзыв">‹</button>
+      <div class="rev-track" id="revTrack">
+        <div class="rev-slide"><img src="img/wa-review-1.jpg" alt="Отзыв клиентки, Атырау — скриншот переписки" width="906" height="1600" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/wa-review-2.jpg" alt="Подтверждение отправки заказа, Атырау" width="1000" height="1085" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/wa-review-3.jpg" alt="Отзыв клиента — скриншот переписки" width="1000" height="977" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/wa-review-4.jpg" alt="Отзыв клиента о приёме капсул — скриншот переписки" width="1000" height="1248" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/wa-review-5.jpg" alt="Отзыв клиентки, Астана — скриншот переписки" width="998" height="1600" decoding="async" loading="lazy"></div>
+        <div class="rev-slide"><img src="img/wa-review-6.jpg" alt="Отзыв клиентки, Тараз — скриншот переписки" width="1000" height="1384" decoding="async" loading="lazy"></div>
+      </div>
+      <button class="rev-nav rev-next" type="button" aria-label="Следующий отзыв">›</button>
+    </div>
+    <div class="rev-dots" id="revDots"></div>
+  </div>
+</section>
+
+<!-- ============ 23. ОРИЕНТИРОВОЧНЫЕ ИЗМЕНЕНИЯ ЗА 1 МЕСЯЦ (было «До/После») ============ -->
+<section>
+  <div class="wrap">
+    <h2>Ориентировочные изменения за 1 месяц</h2>
+    <div class="degree-grid">
+      <div class="degree-card">
+        <div class="degree-icon"><img src="img/degree-1.png" alt="Силуэт — I степень ожирения" width="287" height="282" decoding="async" loading="lazy"></div>
+        <span class="kicker">I степень ожирения</span>
+        <div class="degree-range">−3–6 кг</div>
+        <p>Уменьшение объёмов тела, талии и отёчности, более лёгкое самочувствие.</p>
+      </div>
+      <div class="degree-card">
+        <div class="degree-icon"><img src="img/degree-2.png" alt="Силуэт — II степень ожирения" width="287" height="282" decoding="async" loading="lazy"></div>
+        <span class="kicker">II степень ожирения</span>
+        <div class="degree-range">−4–8 кг</div>
+        <p>Заметное уменьшение объёмов, снижение веса и постепенное облегчение физической нагрузки.</p>
+      </div>
+      <div class="degree-card">
+        <div class="degree-icon"><img src="img/degree-3.png" alt="Силуэт — III степень ожирения" width="302" height="295" decoding="async" loading="lazy"></div>
+        <span class="kicker">III степень ожирения</span>
+        <div class="degree-range">−5–10 кг</div>
+        <p>Более выраженная динамика веса и объёмов при соблюдении рекомендаций и режима.</p>
+      </div>
+    </div>
+    <p class="degree-disclaimer">Результат индивидуален. Диапазоны не являются гарантией и зависят от питания, активности, исходного веса и состояния организма.</p>
+  </div>
+</section>
+
+<!-- ============ 25. FAQ ============ -->
+<section id="faq">
+  <div class="wrap" style="max-width:760px;">
+    <h2>Вопросы и ответы</h2>
+    <div style="margin-top:24px;">
+      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Из чего состоит комплекс? <span class="sign" aria-hidden="true">+</span></div><div class="faq-a" hidden>Из двух препаратов.</div></div>
+      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Как определяется продукт? <span class="sign" aria-hidden="true">+</span></div><div class="faq-a" hidden>Сначала рассчитывается ИМТ, определяется степень ожирения и проводится консультация специалиста.</div></div>
+      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Можно ли самостоятельно выбрать препарат? <span class="sign" aria-hidden="true">+</span></div><div class="faq-a" hidden>Продукт прописывается после консультации.</div></div>
+      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Сколько длится программа? <span class="sign" aria-hidden="true">+</span></div><div class="faq-a" hidden>4 недели.</div></div>
+      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Что входит в комплекс очищения? <span class="sign" aria-hidden="true">+</span></div><div class="faq-a" hidden>Чёрный тмин, оливковое масло и сенна.</div></div>
+      <div class="faq-item"><div class="faq-q" role="button" tabindex="0" aria-expanded="false">Как получить консультацию? <span class="sign" aria-hidden="true">+</span></div><div class="faq-a" hidden>Оставить заявку через сайт.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 26. ДОКУМЕНТЫ ============ -->
+<section id="documents" style="background:var(--white);">
+  <div class="wrap">
+    <h2>Прозрачность и качество</h2>
+    <div class="docs-grid">
+      <a class="doc-card" href="docs/certificate.pdf" target="_blank" rel="noopener" style="color:inherit; text-decoration:none; display:block;"><div class="ph"><img src="img/doc-certificate.jpg" alt="Сертификат соответствия" width="1310" height="1853" decoding="async" loading="lazy"></div>Сертификаты</a>
+      <a class="doc-card" href="docs/sgr.pdf" target="_blank" rel="noopener" style="color:inherit; text-decoration:none; display:block;"><div class="ph"><img src="img/doc-sgr.jpg" alt="Свидетельство о госрегистрации" width="1310" height="1853" decoding="async" loading="lazy"></div>СГР</a>
+      <a class="doc-card" href="docs/composition.pdf" target="_blank" rel="noopener" style="color:inherit; text-decoration:none; display:block;"><div class="ph"><img src="img/doc-composition.jpg" alt="Состав продукции" width="1310" height="1853" decoding="async" loading="lazy"></div>Состав</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 27. ФИНАЛЬНЫЙ CTA ============ -->
+<section class="final">
+  <div class="wrap">
+    <h2>Узнайте, какой комплекс подходит именно вам</h2>
+    <p style="opacity:0.75; margin-bottom:28px;">Рассчитайте ИМТ → определите степень ожирения → получите консультацию → подберите продукт.</p>
+    <a href="#calc" class="btn btn-on-dark" style="padding:18px 40px; font-size:16px;">Получить расчёт ИМТ</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ 29. FOOTER ============ -->
+<footer id="contacts">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="flogo">FATTOFF</div>
+      <p style="opacity:0.75; max-width:26ch;">АО STORM, г. Алматы, Казахстан</p>
+    </div>
+    <div>
+      <h4>Навигация</h4>
+      <a href="#product">О комплексе</a>
+      <a href="#how">Как действует</a>
+      <a href="#weeks">4 недели</a>
+      <a href="#composition">Состав</a>
+      <a href="#documents">Документы</a>
+    </div>
+    <div>
+      <h4>Компания</h4>
+      <a href="#about">О нас</a>
+      <a href="#founder">Основатель</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contacts">Контакты</a>
+    </div>
+    <div>
+      <h4>Производство</h4>
+      <p style="opacity:0.8;">Weingut Heitlinger GmbH<br>Germany<br>Am Mühlberg 3, D-76684<br>Östringen-Tiefenbach</p>
+      <div style="margin-top:14px; display:flex; gap:12px;">
+        <a href="https://wa.me/77066094641?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%20FATTOFF%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%80%D0%B0%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D1%82%D1%8C%D1%81%D1%8F%2C%20%D1%87%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B9%D0%B4%D1%91%D1%82%20%D0%B8%D0%BC%D0%B5%D0%BD%D0%BD%D0%BE%20%D0%BC%D0%BD%D0%B5.%20%D0%9C%D0%BE%D0%B6%D0%BD%D0%BE%20%D0%BF%D1%80%D0%BE%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F%3F" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ 28. FORM POPUP ============ -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">✕</button>
+    <div id="leadFormView">
+      <h2 id="modalTitle" style="font-size:22px; margin-bottom:18px;">Получить расчёт ИМТ</h2>
+      <form id="leadForm" novalidate>
+        <div class="field"><label for="lf-name">Имя</label><input id="lf-name" name="name" type="text" required autocomplete="name"></div>
+        <div class="field"><label for="lf-phone">Телефон</label><input id="lf-phone" name="phone" type="tel" required autocomplete="tel" pattern="[0-9+\(\)\-\s]{7,}" title="Только цифры, пробелы, +, скобки и дефис, не короче 7 символов"></div>
+        <div class="field"><label for="lf-age">Возраст</label><input id="lf-age" name="age" type="number" min="10" max="100" required></div>
+        <div class="field"><label for="lf-height">Рост, см</label><input id="lf-height" name="height" type="number" min="100" max="230" required step="any"></div>
+        <div class="field"><label for="lf-weight">Вес, кг</label><input id="lf-weight" name="weight" type="number" min="30" max="300" required step="any"></div>
+        <div class="field"><label for="lf-city">Город</label><input id="lf-city" name="city" type="text" required></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;">Получить консультацию</button>
+      </form>
+    </div>
+    <div id="leadSuccessView" role="status" aria-live="polite" tabindex="-1" style="display:none; text-align:center;">
+      <h2 style="font-size:22px; margin-bottom:10px;">Заявка принята</h2>
+      <p style="opacity:0.75;">Специалист свяжется с вами для консультации и подбора программы.</p>
+      <button class="btn btn-primary" type="button" style="width:100%; margin-top:20px;" onclick="closeModal()">Понятно</button>
+    </div>
+  </div>
+</div>
+
+<div class="sticky-cta"><a href="#calc" class="btn btn-primary">Получить расчёт ИМТ</a></div>
+
+<script>
+/* ---- BMI CALCULATOR ---- */
+/* Границы ВОЗ. Классифицируем по точному значению, а не по округлённому:
+   24.96 после toFixed(1) даёт «25.0» и уехало бы в «Избыточный вес». */
+function bmiCategory(bmi){
+  if(bmi < 18.5) return 'Недостаточный вес';
+  if(bmi < 25) return 'Норма';
+  if(bmi < 30) return 'Избыточный вес';
+  if(bmi < 35) return 'Ожирение I степени';
+  if(bmi < 40) return 'Ожирение II степени';
+  return 'Ожирение III степени';
+}
+/* URL веб-приложения Google Apps Script (Deploy → New deployment → Web app).
+   Инструкция по установке — google-apps-script-instructions.md в корне проекта. */
+const LEAD_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzRYL_VCPy6wWbbioJ96swLOXW4jmM3Dsv-oYzjxU2fmUKWs286lxr96cI17k21Xjpn/exec';
+
+const bmiForm = document.getElementById('bmiForm');
+if(bmiForm) bmiForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!this.checkValidity()){ this.reportValidity(); return; }
+  const cm = parseFloat(document.getElementById('height').value);
+  const w = parseFloat(document.getElementById('weight').value);
+  /* округляем шум плавающей точки: (160/100)^2 = 2.5600000000000005, и 64/160 давало 24.9999… -> не та категория */
+  const bmi = Math.round((w * 10000 / (cm * cm)) * 1e6) / 1e6;
+  const cat = bmiCategory(bmi);
+  /* усекаем, а не округляем: границы ВОЗ (18.5, 25, 30…) лежат на одном знаке, поэтому
+     усечённое число всегда в той же категории, а округление давало «25.0 — Норма» */
+  const shown = (Math.floor(bmi * 10) / 10).toFixed(1);
+  document.getElementById('bmiVal').textContent = 'Ваш ИМТ — ' + shown;
+  document.getElementById('bmiCategory').textContent = 'Степень — ' + cat;
+  document.getElementById('calcResult').style.display = 'block';
+  document.getElementById('calcAnnounce').textContent = 'Ваш ИМТ — ' + shown + '. Степень — ' + cat + '.';
+});
+
+/* ---- MOBILE BURGER MENU ---- */
+/* Каждый компонент проверяет свои элементы: при переносе в Tilda блоки могут копироваться по одному */
+const burgerBtn = document.getElementById('burgerBtn');
+const mainMenu = document.getElementById('mainMenu');
+function menuIsOpen(){ return !!mainMenu && mainMenu.classList.contains('open'); }
+function closeMenu(){
+  if(!mainMenu || !burgerBtn) return;
+  mainMenu.classList.remove('open');
+  burgerBtn.setAttribute('aria-expanded', 'false');
+}
+if(burgerBtn && mainMenu){
+  burgerBtn.addEventListener('click', ()=>{
+    const isOpen = mainMenu.classList.toggle('open');
+    burgerBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+  mainMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMenu));
+  document.addEventListener('click', (e)=>{
+    if(menuIsOpen() && !mainMenu.contains(e.target) && !burgerBtn.contains(e.target)) closeMenu();
+  });
+}
+
+/* ---- LEAD MODAL ---- */
+const modalOverlay = document.getElementById('modalOverlay');
+const leadFormView = document.getElementById('leadFormView');
+const leadSuccessView = document.getElementById('leadSuccessView');
+const leadForm = document.getElementById('leadForm');
+
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
+let modalReturnFocus = null;
+
+function openModal(title){
+  if(!modalOverlay || !leadForm) return;
+  document.getElementById('modalTitle').textContent = title || 'Получить расчёт ИМТ';
+  leadFormView.style.display = 'block';
+  leadSuccessView.style.display = 'none';
+  leadForm.reset();
+  /* переносим уже введённые в калькуляторе данные, чтобы не спрашивать их второй раз */
+  ['age','height','weight'].forEach(id=>{
+    const from = document.getElementById(id);
+    const to = document.getElementById('lf-' + id);
+    if(from && to && from.value) to.value = from.value;
+  });
+  modalReturnFocus = document.activeElement;
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  const first = leadForm.querySelector('input');
+  if(first) first.focus();
+}
+function closeModal(){
+  if(!modalOverlay) return;
+  modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  if(modalReturnFocus && document.contains(modalReturnFocus)) modalReturnFocus.focus();
+  modalReturnFocus = null;
+}
+if(modalOverlay) modalOverlay.addEventListener('click', (e)=>{
+  if(e.target === modalOverlay) closeModal();
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && menuIsOpen()){ closeMenu(); burgerBtn.focus(); return; }
+  if(!modalOverlay || !modalOverlay.classList.contains('open')) return;
+  if(e.key === 'Escape'){ closeModal(); return; }
+  /* удерживаем фокус внутри диалога, пока он открыт */
+  if(e.key === 'Tab'){
+    const items = Array.from(modalOverlay.querySelectorAll(FOCUSABLE))
+      .filter(el => el.offsetParent !== null);
+    if(!items.length) return;
+    const firstItem = items[0];
+    const lastItem = items[items.length - 1];
+    if(e.shiftKey && document.activeElement === firstItem){ e.preventDefault(); lastItem.focus(); }
+    else if(!e.shiftKey && document.activeElement === lastItem){ e.preventDefault(); firstItem.focus(); }
+  }
+});
+if(leadForm) leadForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!this.checkValidity()){ this.reportValidity(); return; }
+  const fd = new FormData(this);
+  const height = parseFloat(fd.get('height'));
+  const weight = parseFloat(fd.get('weight'));
+  const bmi = (height && weight) ? weight / Math.pow(height / 100, 2) : null;
+  const payload = {
+    name: fd.get('name') || '',
+    phone: fd.get('phone') || '',
+    age: fd.get('age') || '',
+    height: fd.get('height') || '',
+    weight: fd.get('weight') || '',
+    city: fd.get('city') || '',
+    bmi: bmi ? bmi.toFixed(1) : '',
+    category: bmi ? bmiCategory(bmi) : '',
+    source: location.href
+  };
+  /* no-cors: Apps Script Web App не отдаёт CORS-заголовки на POST с телом, а без mode:'no-cors'
+     браузер сначала шлёт preflight OPTIONS, который Apps Script не обрабатывает — запрос падает.
+     Ответ в no-cors непрозрачный (opaque), поэтому просто отправляем и не проверяем его. */
+  if(LEAD_WEBHOOK_URL && !LEAD_WEBHOOK_URL.startsWith('ВСТАВЬ')){
+    fetch(LEAD_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    }).catch(()=>{ /* заявка всё равно считается принятой для пользователя, ошибку логировать некуда на статическом сайте */ });
+  }
+  leadFormView.style.display = 'none';
+  leadSuccessView.style.display = 'block';
+  document.getElementById('modalTitle').textContent = 'Заявка принята';
+  /* фокус на подтверждении: иначе он теряется вместе со скрытой формой и скринридер молчит */
+  leadSuccessView.focus();
+});
+
+/* ---- FAQ TOGGLE ---- */
+document.querySelectorAll('.faq-q').forEach((q, i)=>{
+  const a = q.nextElementSibling;
+  a.id = a.id || ('faq-a-' + (i + 1));
+  q.setAttribute('aria-controls', a.id);
+  function toggle(){
+    const isOpen = q.getAttribute('aria-expanded') === 'true';
+    a.hidden = isOpen;
+    q.setAttribute('aria-expanded', String(!isOpen));
+  }
+  q.addEventListener('click', toggle);
+  q.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+  });
+});
+
+/* ---- CAROUSEL (reusable) ---- */
+function initCarousel(trackId, dotsId, prevBtn, nextBtn, label){
+  const track = document.getElementById(trackId);
+  const dotsWrap = document.getElementById(dotsId);
+  if(!track || !dotsWrap) return;
+  const slides = Array.from(track.children);
+  /* текущий слайд держим в переменной: scrollLeft во время smooth-прокрутки
+     ещё показывает старую позицию, и быстрые клики по стрелке схлопывались в один */
+  let index = 0;
+  const dots = [];
+  function setIndex(i){
+    index = (i + slides.length) % slides.length;
+    dots.forEach((d, n)=>{
+      const isActive = n === index;
+      d.classList.toggle('active', isActive);
+      d.setAttribute('aria-current', String(isActive));
+    });
+  }
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  function goTo(i){
+    setIndex(i);
+    /* scrollTo по треку, а не scrollIntoView: тот прокручивал и страницу (прыжок до ~400px) */
+    track.scrollTo({left: index * track.clientWidth, behavior: motion});
+  }
+  slides.forEach((slide, i)=>{
+    const dot = document.createElement('button');
+    dot.className = 'rev-dot' + (i === 0 ? ' active' : '');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', label + ' ' + (i + 1));
+    dot.setAttribute('aria-current', String(i === 0));
+    dot.addEventListener('click', ()=> goTo(i));
+    dotsWrap.appendChild(dot);
+    dots.push(dot);
+  });
+  if(prevBtn) prevBtn.addEventListener('click', ()=> goTo(index - 1));
+  if(nextBtn) nextBtn.addEventListener('click', ()=> goTo(index + 1));
+  /* свайп/колесо меняют позицию мимо кнопок — пересинхронизируем после остановки */
+  let scrollTimer;
+  track.addEventListener('scroll', ()=>{
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(()=> setIndex(Math.round(track.scrollLeft / track.clientWidth)), 100);
+  });
+}
+initCarousel('revTrack', 'revDots', document.querySelector('.rev-prev'), document.querySelector('.rev-next'), 'Отзыв');
+initCarousel('founderTrack', 'founderDots', document.querySelector('.founder-prev'), document.querySelector('.founder-next'), 'Фото');
+</script>
+
+</body>
+</html>
