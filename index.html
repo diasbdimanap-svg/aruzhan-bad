@@ -207,14 +207,15 @@
   @media(max-width:900px){ .timeline{grid-template-columns:1fr 1fr;} }
   @media(max-width:380px){ .timeline{grid-template-columns:1fr;} } /* было 520px — расширили диапазон 2 колонок на большинство телефонов в портрете */
   .tl-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;}
-  .tl-card .ph{aspect-ratio:400/933; border-radius:0; max-height:58vh;} /* кадр 400/933 очень высокий — капаем и кадрируем по верху, а не растягиваем секцию */
+  /* Фото уже обрезаны у источника (img/week*.jpg) под пропорцию 400/692 — лишний фон над головой и под ногами
+     убран в самом файле, поэтому одна и та же рамка подходит и десктопу, и мобилке без отдельного медиа-запроса. */
+  .tl-card .ph{aspect-ratio:400/692; border-radius:0; max-height:58vh;}
   .tl-card .ph img{object-position:top;}
-  @media(max-width:520px){ .tl-card .ph{aspect-ratio:3/4;} }
-  .tl-body{padding:22px;}
+  .tl-body{padding:16px;}
   .tl-week{font-family:'Newsreader',serif; font-style:italic; color:var(--green-mid); font-size:14px;}
-  .tl-body h3{margin:6px 0 10px; font-size:16.5px;}
-  .tl-body ul{padding-left:16px; margin:10px 0 0; font-size:13.5px; opacity:0.8;}
-  .tl-loss{display:inline-block; margin-top:12px; font-weight:800; font-size:15px; color:var(--green-deep);}
+  .tl-body h3{margin:4px 0 6px; font-size:16.5px;}
+  .tl-body ul{padding-left:16px; margin:8px 0 0; font-size:13.5px; opacity:0.8;}
+  .tl-loss{display:inline-block; margin-top:8px; font-weight:800; font-size:15px; color:var(--green-deep);}
 
   /* ---------- INGREDIENTS 3 CARDS ---------- */
   .ingredients{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:40px;}
@@ -501,7 +502,7 @@
     <h2>Как меняется организм</h2>
     <div class="timeline">
       <div class="tl-card">
-        <div class="ph"><img src="img/week1.jpg" alt="Неделя 1" width="404" height="933" decoding="async" loading="lazy"></div>
+        <div class="ph"><img src="img/week1.jpg" alt="Неделя 1" width="404" height="692" decoding="async" loading="lazy"></div>
         <div class="tl-body">
           <span class="tl-week">Неделя 1</span>
           <h3>Перестройка организма на активное жиросжигание</h3>
@@ -510,7 +511,7 @@
         </div>
       </div>
       <div class="tl-card">
-        <div class="ph"><img src="img/week2.jpg" alt="Неделя 2" width="391" height="933" decoding="async" loading="lazy"></div>
+        <div class="ph"><img src="img/week2.jpg" alt="Неделя 2" width="391" height="692" decoding="async" loading="lazy"></div>
         <div class="tl-body">
           <span class="tl-week">Неделя 2</span>
           <h3>Запуск жиросжигания в области живота</h3>
@@ -519,7 +520,7 @@
         </div>
       </div>
       <div class="tl-card">
-        <div class="ph"><img src="img/week3.jpg" alt="Неделя 3" width="396" height="933" decoding="async" loading="lazy"></div>
+        <div class="ph"><img src="img/week3.jpg" alt="Неделя 3" width="396" height="692" decoding="async" loading="lazy"></div>
         <div class="tl-body">
           <span class="tl-week">Неделя 3</span>
           <h3>Активное жиросжигание во всех участках тела</h3>
@@ -528,7 +529,7 @@
         </div>
       </div>
       <div class="tl-card">
-        <div class="ph"><img src="img/week4.jpg" alt="Неделя 4" width="400" height="933" decoding="async" loading="lazy"></div>
+        <div class="ph"><img src="img/week4.jpg" alt="Неделя 4" width="400" height="692" decoding="async" loading="lazy"></div>
         <div class="tl-body">
           <span class="tl-week">Неделя 4</span>
           <h3>Заметная стройность</h3>
