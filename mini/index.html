@@ -88,8 +88,27 @@
   .ba-range{
     position:absolute; inset:0; width:100%; height:100%; margin:0; z-index:5; opacity:0; cursor:ew-resize;
     -webkit-appearance:none; appearance:none;
+    touch-action:pan-y; /* горизонтальный свайп по фото двигает шторку, вертикальный — скроллит страницу */
   }
   .ba-range::-webkit-slider-thumb{-webkit-appearance:none; width:40px; height:100%;}
+
+  /* Карусель кейсов: слайды переключаются кнопками/точками, а не свайпом —
+     свайп конфликтовал бы с перетаскиванием шторки внутри слайда. */
+  .ba-slide{display:none;}
+  .ba-slide.is-active{display:block;}
+  .ba-nav-row{display:flex; align-items:center; justify-content:center; gap:6px; margin:14px auto 0; max-width:340px;}
+  .ba-nav{
+    width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.08); color:var(--white); font-size:22px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-family:inherit; transition:background .15s ease;
+  }
+  .ba-nav:hover{background:rgba(255,255,255,0.18);}
+  .ba-dots{display:flex;}
+  /* кнопка 24×24 (минимум для тача), видимая точка 8×8 внутри */
+  .ba-dot{width:24px; height:24px; position:relative; background:none; border:none; padding:0; cursor:pointer;}
+  .ba-dot::before{content:""; position:absolute; inset:8px; border-radius:50%; background:rgba(255,255,255,0.35);}
+  .ba-dot.active::before{background:var(--white);}
+  .ba-counter{font-size:12px; opacity:0.6; min-width:44px; text-align:center; font-variant-numeric:tabular-nums;}
   .ba-caption{max-width:340px; margin:18px auto 0; text-align:center;}
   .ba-name{font-weight:700; font-size:15px;}
   .ba-stat{font-family:'Newsreader',serif; font-style:italic; color:var(--blue-cold); font-size:14px; margin-top:2px;}
@@ -191,13 +210,53 @@
     <h1>РЕЗУЛЬТАТЫ,<br>КОТОРЫЕ ВИДНО</h1>
     <p class="proof-sub">Реальные истории людей, которые уже прошли свой путь к изменению тела.</p>
 
-    <div class="ba-wrap" id="baWrap">
-      <img class="ba-img ba-after" src="../img/founder-transform-4-after.jpg" alt="После" width="1000" height="888">
-      <img class="ba-img ba-before" src="../img/founder-transform-1-before.jpg" alt="До" width="1000" height="888">
-      <span class="ba-tag before">ДО</span>
-      <span class="ba-tag after">ПОСЛЕ</span>
-      <div class="ba-handle" id="baHandle"></div>
-      <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+    <div class="ba-carousel" id="baCarousel" aria-roledescription="карусель" aria-label="Фото до и после">
+      <div class="ba-slide is-active">
+        <div class="ba-wrap">
+          <img class="ba-img ba-after" src="../img/founder-transform-3-after.jpg" alt="После" width="1000" height="888" fetchpriority="high">
+          <img class="ba-img ba-before" src="../img/founder-transform-3-before.jpg" alt="До" width="1000" height="888" fetchpriority="high">
+          <span class="ba-tag before">ДО</span>
+          <span class="ba-tag after">ПОСЛЕ</span>
+          <div class="ba-handle"></div>
+          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+        </div>
+      </div>
+      <div class="ba-slide">
+        <div class="ba-wrap">
+          <img class="ba-img ba-after" src="../img/founder-transform-4-after.jpg" alt="После" width="1000" height="888" fetchpriority="low" decoding="async">
+          <img class="ba-img ba-before" src="../img/founder-transform-4-before.jpg" alt="До" width="1000" height="888" fetchpriority="low" decoding="async">
+          <span class="ba-tag before">ДО</span>
+          <span class="ba-tag after">ПОСЛЕ</span>
+          <div class="ba-handle"></div>
+          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+        </div>
+      </div>
+      <div class="ba-slide">
+        <div class="ba-wrap">
+          <img class="ba-img ba-after" src="../img/founder-transform-1-after.jpg" alt="После" width="1000" height="888" fetchpriority="low" decoding="async">
+          <img class="ba-img ba-before" src="../img/founder-transform-1-before.jpg" alt="До" width="1000" height="888" fetchpriority="low" decoding="async">
+          <span class="ba-tag before">ДО</span>
+          <span class="ba-tag after">ПОСЛЕ</span>
+          <div class="ba-handle"></div>
+          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+        </div>
+      </div>
+      <div class="ba-slide">
+        <div class="ba-wrap">
+          <img class="ba-img ba-after" src="../img/founder-transform-5-after.jpg" alt="После" width="1000" height="888" fetchpriority="low" decoding="async">
+          <img class="ba-img ba-before" src="../img/founder-transform-5-before.jpg" alt="До" width="1000" height="888" fetchpriority="low" decoding="async">
+          <span class="ba-tag before">ДО</span>
+          <span class="ba-tag after">ПОСЛЕ</span>
+          <div class="ba-handle"></div>
+          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+        </div>
+      </div>
+      <div class="ba-nav-row">
+        <button class="ba-nav" id="baPrev" type="button" aria-label="Предыдущее фото">‹</button>
+        <div class="ba-dots" id="baDots"></div>
+        <span class="ba-counter" id="baCounter" aria-live="polite"></span>
+        <button class="ba-nav" id="baNext" type="button" aria-label="Следующее фото">›</button>
+      </div>
     </div>
     <div class="ba-caption">
       <div class="ba-name">Аружан Мақсатқызы</div>
@@ -324,16 +383,51 @@
 </footer>
 
 <script>
-/* ---- BEFORE/AFTER SLIDER ---- */
+/* ---- BEFORE/AFTER: шторка в каждом слайде + карусель кейсов ---- */
 (function(){
-  const wrap = document.getElementById('baWrap');
-  const range = document.getElementById('baRange');
-  if(!wrap || !range) return;
-  function set(v){
-    wrap.style.setProperty('--ba-pos', v + '%');
+  const slides = Array.from(document.querySelectorAll('.ba-slide'));
+  if(!slides.length) return;
+
+  /* у каждого слайда своя независимая шторка — позиция не сбрасывается при переключении */
+  slides.forEach(slide=>{
+    const wrap = slide.querySelector('.ba-wrap');
+    const range = slide.querySelector('.ba-range');
+    if(!wrap || !range) return;
+    const set = v => wrap.style.setProperty('--ba-pos', v + '%');
+    range.addEventListener('input', ()=> set(range.value));
+    set(range.value);
+  });
+
+  const prev = document.getElementById('baPrev');
+  const next = document.getElementById('baNext');
+  const dotsWrap = document.getElementById('baDots');
+  const counter = document.getElementById('baCounter');
+  const navRow = document.querySelector('.ba-nav-row');
+  if(slides.length < 2){ if(navRow) navRow.hidden = true; return; }
+
+  let index = 0;
+  const dots = slides.map((_, i)=>{
+    const d = document.createElement('button');
+    d.type = 'button';
+    d.className = 'ba-dot';
+    d.setAttribute('aria-label', 'Фото ' + (i + 1) + ' из ' + slides.length);
+    d.addEventListener('click', ()=> go(i));
+    dotsWrap.appendChild(d);
+    return d;
+  });
+
+  function go(i){
+    index = (i + slides.length) % slides.length;
+    slides.forEach((s, k)=> s.classList.toggle('is-active', k === index));
+    dots.forEach((d, k)=>{
+      d.classList.toggle('active', k === index);
+      if(k === index) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+    });
+    if(counter) counter.textContent = (index + 1) + ' / ' + slides.length;
   }
-  range.addEventListener('input', ()=> set(range.value));
-  set(range.value);
+  prev.addEventListener('click', ()=> go(index - 1));
+  next.addEventListener('click', ()=> go(index + 1));
+  go(0);
 })();
 
 /* ---- BMI CALCULATOR ---- */
