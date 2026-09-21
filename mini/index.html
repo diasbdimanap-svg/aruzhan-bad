@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FATTOFF — узнайте свой ИМТ за 1 минуту</title>
+<meta name="description" content="FATTOFF — премиальная система похудения и очищения организма. Реальные результаты, как работает комплекс, и персональный расчёт ИМТ.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#1F3B2C;
+    --green-mid:#2E5240;
+    --milk:#F4F1E9;
+    --white:#FFFFFF;
+    --blue-cold:#AFC8D3;
+    --graphite:#23261F;
+    --line:rgba(255,255,255,0.16);
+    --line-dark:rgba(35,38,31,0.14);
+    --radius-s:2px;
+    --radius-m:6px;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  @media(prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth;} }
+  body{margin:0; font-family:'Manrope',sans-serif; color:var(--graphite); background:var(--milk); line-height:1.5; -webkit-font-smoothing:antialiased;}
+  img{max-width:100%; height:auto; display:block;}
+  .wrap{max-width:520px; margin:0 auto; padding:0 24px;}
+  h1,h2,h3{margin:0; font-weight:700; letter-spacing:-0.01em;}
+  p{margin:0;}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+  section[id]{scroll-margin-top:64px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:16px 28px; border-radius:var(--radius-s); font-weight:700; font-size:14.5px;
+    letter-spacing:0.01em; text-decoration:none; cursor:pointer; border:1px solid transparent;
+    transition:opacity .15s ease; font-family:inherit; width:100%;
+  }
+  .btn:hover{opacity:0.86;}
+  .btn-light{background:var(--white); color:var(--green-deep);}
+  .btn-dark{background:var(--green-deep); color:var(--white);}
+  .arrow{display:inline-block; transition:transform .2s ease;}
+  .btn:hover .arrow{transform:translateX(4px);}
+
+  /* ---------- MICRO-NAV ---------- */
+  .micro-nav{
+    position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px; background:rgba(244,241,233,0.92); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-dark); font-size:13px;
+  }
+  .micro-nav .logo{font-weight:800; letter-spacing:0.04em; font-size:15px; color:var(--graphite); text-decoration:none;}
+  .micro-nav nav{display:flex; gap:14px;}
+  .micro-nav nav a{color:var(--graphite); opacity:0.7; text-decoration:none; font-weight:600;}
+  .micro-nav nav a:hover{opacity:1;}
+  @media(max-width:360px){ .micro-nav nav{display:none;} }
+
+  /* ---------- BLOCK 1 — PROOF ---------- */
+  .proof{
+    position:relative; overflow:hidden; color:var(--white); min-height:calc(100svh - 49px);
+    display:flex; flex-direction:column; justify-content:center; padding:48px 0 40px;
+    background:
+      radial-gradient(ellipse 820px 620px at 15% 10%, rgba(94,138,113,0.4), transparent 60%),
+      radial-gradient(ellipse 700px 700px at 90% 90%, rgba(58,104,82,0.45), transparent 62%),
+      linear-gradient(165deg, #0E1E16 0%, #15301F 55%, #1F3B2C 100%);
+  }
+  .proof h1{font-size:clamp(30px,7vw,40px); line-height:1.12; text-align:center;}
+  .proof-sub{font-size:15.5px; opacity:0.82; text-align:center; max-width:36ch; margin:14px auto 0;}
+
+  .ba-wrap{position:relative; max-width:340px; margin:32px auto 0; border-radius:var(--radius-m); overflow:hidden; aspect-ratio:4/5; box-shadow:0 30px 60px rgba(0,0,0,0.4);}
+  .ba-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 15%; -webkit-user-drag:none; user-select:none;}
+  .ba-before{clip-path: inset(0 calc(100% - var(--ba-pos, 50%)) 0 0); z-index:2;}
+  .ba-tag{position:absolute; top:12px; z-index:3; font-size:11px; font-weight:700; letter-spacing:0.06em; background:rgba(0,0,0,0.45); padding:5px 10px; border-radius:20px;}
+  .ba-tag.before{left:12px;}
+  .ba-tag.after{right:12px;}
+  .ba-handle{
+    position:absolute; top:0; bottom:0; left:var(--ba-pos, 50%); width:0; z-index:4; pointer-events:none;
+    border-left:2px solid rgba(255,255,255,0.9); transform:translateX(-1px);
+  }
+  .ba-handle::after{
+    content:"‹ ›"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:38px; height:38px; border-radius:50%; background:var(--white); color:var(--green-deep);
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; letter-spacing:2px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.3);
+  }
+  .ba-range{
+    position:absolute; inset:0; width:100%; height:100%; margin:0; z-index:5; opacity:0; cursor:ew-resize;
+    -webkit-appearance:none; appearance:none;
+  }
+  .ba-range::-webkit-slider-thumb{-webkit-appearance:none; width:40px; height:100%;}
+  .ba-caption{max-width:340px; margin:18px auto 0; text-align:center;}
+  .ba-name{font-weight:700; font-size:15px;}
+  .ba-stat{font-family:'Newsreader',serif; font-style:italic; color:var(--blue-cold); font-size:14px; margin-top:2px;}
+  .ba-quote{font-size:13.5px; opacity:0.78; margin-top:10px; line-height:1.5;}
+
+  .proof-cta{max-width:280px; margin:32px auto 0;}
+
+  /* ---------- BLOCK 2 — MECHANISM ---------- */
+  .mechanism{background:var(--green-deep); color:var(--white); padding:64px 0;}
+  .mechanism .kicker{display:block; text-align:center; font-size:12.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue-cold); margin-bottom:14px;}
+  .mechanism h2{font-size:clamp(24px,6vw,30px); text-align:center; line-height:1.15;}
+  .mechanism-sub{font-size:14.5px; opacity:0.78; text-align:center; max-width:34ch; margin:12px auto 0;}
+
+  .product-frame{background:var(--white); border-radius:14px; padding:14px; margin:32px 0; box-shadow:0 30px 60px rgba(0,0,0,0.28);}
+  .product-frame img{border-radius:8px; width:100%;}
+
+  .directions{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;}
+  .dir-card{background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.16); border-radius:var(--radius-m); padding:16px 14px;}
+  .dir-num{font-family:'Newsreader',serif; font-style:italic; color:var(--blue-cold); font-size:14px;}
+  .dir-card h3{font-size:14.5px; margin:6px 0 6px; color:var(--white);}
+  .dir-card p{font-size:12.5px; opacity:0.75; line-height:1.45;}
+
+  .scheme{display:flex; gap:10px; margin-top:26px; text-align:center;}
+  .scheme-col{flex:1; background:rgba(255,255,255,0.05); border-radius:var(--radius-m); padding:16px 8px;}
+  .scheme-label{font-size:11.5px; font-weight:800; letter-spacing:0.04em;}
+  .scheme-arrow{opacity:0.5; margin:6px 0; font-size:13px;}
+  .scheme-result{font-size:11px; opacity:0.8; line-height:1.35;}
+
+  .trust-strip{margin-top:30px; border-top:1px solid rgba(255,255,255,0.16);}
+  .trust-item{border-bottom:1px solid rgba(255,255,255,0.16);}
+  .trust-q{display:flex; justify-content:space-between; align-items:center; padding:14px 2px; cursor:pointer; font-size:13.5px; font-weight:700;}
+  .trust-q .sign{transition:transform .15s ease; opacity:0.6;}
+  .trust-q[aria-expanded="true"] .sign{transform:rotate(45deg);}
+  .trust-a{font-size:13px; opacity:0.78; padding:0 2px 14px; line-height:1.5;}
+  .trust-a a{color:var(--blue-cold);}
+
+  .mechanism-cta{max-width:320px; margin:32px auto 0;}
+
+  /* ---------- BLOCK 3 — PERSONALIZATION ---------- */
+  .personal{background:var(--milk); padding:64px 0 56px;}
+  .personal .kicker{display:block; text-align:center; font-size:12.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--green-mid); margin-bottom:14px;}
+  .personal h2{font-size:clamp(24px,6vw,30px); text-align:center; line-height:1.15;}
+  .personal-sub{font-size:14.5px; opacity:0.75; text-align:center; max-width:36ch; margin:12px auto 0;}
+
+  .calc-box{background:var(--white); border:1px solid var(--line-dark); border-radius:var(--radius-m); padding:28px 22px; margin-top:30px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; font-weight:600; margin-bottom:6px; opacity:0.75;}
+  .field input{
+    width:100%; padding:13px 14px; border:1px solid rgba(35,38,31,0.3); border-radius:var(--radius-s);
+    font-family:inherit; font-size:16px; background:var(--milk);
+  }
+  .field input:user-invalid{border-color:#B4483E;}
+  .gender-row{display:flex; gap:10px;}
+  .gender-opt{flex:1;}
+  .gender-opt input{position:absolute; opacity:0; width:1px; height:1px;}
+  .gender-opt span{
+    display:block; text-align:center; padding:12px; border:1px solid rgba(35,38,31,0.3); border-radius:var(--radius-s);
+    font-size:14px; font-weight:600; cursor:pointer; transition:background .15s ease, border-color .15s ease;
+  }
+  .gender-opt input:checked + span{background:var(--green-deep); border-color:var(--green-deep); color:var(--white);}
+  .gender-opt input:focus-visible + span{outline:2px solid var(--green-deep); outline-offset:2px;}
+
+  .calc-result{display:none; margin-top:22px; padding:20px; border-radius:var(--radius-s); background:rgba(175,200,211,0.3); text-align:center;}
+  .calc-result strong{font-size:32px; display:block; color:var(--green-deep);}
+  .calc-result .cat{font-weight:700; margin-top:4px; display:block;}
+  .calc-result .disclaimer{font-size:12px; opacity:0.7; margin-top:12px; line-height:1.5;}
+
+  .lead-block{display:none; margin-top:22px; padding-top:22px; border-top:1px solid var(--line-dark);}
+  .lead-block h3{font-size:16px; margin-bottom:6px;}
+  .lead-block p{font-size:13.5px; opacity:0.75; margin-bottom:16px; line-height:1.5;}
+  .lead-success{display:none; text-align:center; padding:10px 0;}
+  .lead-success h3{font-size:16px; margin-bottom:6px;}
+  .lead-success p{font-size:13.5px; opacity:0.75;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--graphite); color:rgba(255,255,255,0.75); text-align:center; padding:32px 24px; font-size:12.5px;}
+  footer .flogo{color:var(--white); font-weight:800; font-size:15px; margin-bottom:10px;}
+  footer a{color:var(--blue-cold); text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+  footer .sep{opacity:0.4; margin:0 8px;}
+</style>
+</head>
+<body>
+
+<div class="micro-nav">
+  <a href="#proof" class="logo">FATTOFF</a>
+  <nav>
+    <a href="#proof">Результаты</a>
+    <a href="#product">Комплекс</a>
+    <a href="#calc">ИМТ</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ============ 01. PROOF ============ -->
+<section class="proof" id="proof">
+  <div class="wrap">
+    <h1>РЕЗУЛЬТАТЫ,<br>КОТОРЫЕ ВИДНО</h1>
+    <p class="proof-sub">Реальные истории людей, которые уже прошли свой путь к изменению тела.</p>
+
+    <div class="ba-wrap" id="baWrap">
+      <img class="ba-img ba-after" src="../img/founder-transform-4-after.jpg" alt="После" width="1000" height="888">
+      <img class="ba-img ba-before" src="../img/founder-transform-1-before.jpg" alt="До" width="1000" height="888">
+      <span class="ba-tag before">ДО</span>
+      <span class="ba-tag after">ПОСЛЕ</span>
+      <div class="ba-handle" id="baHandle"></div>
+      <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+    </div>
+    <div class="ba-caption">
+      <div class="ba-name">Аружан Мақсатқызы</div>
+      <div class="ba-stat">−32 кг за 3 месяца</div>
+      <p class="ba-quote">«Я прошла этот путь сама. Знаю, каково это — начинать с большого количества лишнего веса и постепенно менять отношение к себе».</p>
+    </div>
+
+    <div class="proof-cta"><a href="#product" class="btn btn-light">КАК РАБОТАЕТ FATTOFF <span class="arrow">→</span></a></div>
+  </div>
+</section>
+
+<!-- ============ 02. MECHANISM ============ -->
+<section class="mechanism" id="product">
+  <div class="wrap">
+    <span class="kicker">Комплекс FATTOFF</span>
+    <h2>ДВА НАПРАВЛЕНИЯ.<br>ОДИН КОМПЛЕКСНЫЙ ПОДХОД.</h2>
+    <p class="mechanism-sub">FATTOFF объединяет два направления поддержки организма в одной системе.</p>
+
+    <div class="product-frame"><img src="../img/hero-product.jpg" alt="Капсулы FATTOFF и Комплексное очищение FATTOFF" width="896" height="1200" loading="lazy"></div>
+
+    <div class="directions">
+      <div class="dir-card">
+        <span class="dir-num">01</span>
+        <h3>Капсулы</h3>
+        <p>Комплекс для снижения веса. ИМТ и дозировка — индивидуально, по назначению специалиста.</p>
+      </div>
+      <div class="dir-card">
+        <span class="dir-num">02</span>
+        <h3>Очищение</h3>
+        <p>Комплексное очищение организма и поддержка ЖКТ натуральными компонентами.</p>
+      </div>
+    </div>
+
+    <div class="scheme">
+      <div class="scheme-col">
+        <div class="scheme-label">КАПСУЛЫ</div>
+        <div class="scheme-arrow">↓</div>
+        <div class="scheme-result">Снижение веса</div>
+      </div>
+      <div class="scheme-col">
+        <div class="scheme-label">ОЧИЩЕНИЕ</div>
+        <div class="scheme-arrow">↓</div>
+        <div class="scheme-result">Комплексный подход</div>
+      </div>
+    </div>
+
+    <div class="trust-strip">
+      <div class="trust-item">
+        <div class="trust-q" role="button" tabindex="0" aria-expanded="false">Состав <span class="sign" aria-hidden="true">+</span></div>
+        <div class="trust-a" hidden>Комплексное очищение: чёрный тмин, оливковое масло и сенна — натуральные компоненты. БАДы в капсулах подбираются индивидуально по назначению специалиста.</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-q" role="button" tabindex="0" aria-expanded="false">Способ применения <span class="sign" aria-hidden="true">+</span></div>
+        <div class="trust-a" hidden>Приём назначается индивидуально после расчёта ИМТ, определения степени и консультации специалиста.</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-q" role="button" tabindex="0" aria-expanded="false">Производитель <span class="sign" aria-hidden="true">+</span></div>
+        <div class="trust-a" hidden>Weingut Heitlinger GmbH, Германия. Дистрибуция в Казахстане — АО STORM, г. Алматы.</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-q" role="button" tabindex="0" aria-expanded="false">Контроль качества <span class="sign" aria-hidden="true">+</span></div>
+        <div class="trust-a" hidden>Документы и сертификаты — на полной версии сайта: <a href="../index.html#documents">смотреть документы →</a></div>
+      </div>
+    </div>
+
+    <div class="mechanism-cta"><a href="#calc" class="btn btn-light">ПОНЯТЬ, ЧТО ПОДОЙДЁТ МНЕ <span class="arrow">→</span></a></div>
+  </div>
+</section>
+
+<!-- ============ 03. PERSONALIZATION / BMI ============ -->
+<section class="personal" id="calc">
+  <div class="wrap">
+    <span class="kicker">Персонально для вас</span>
+    <h2>УЗНАЙТЕ СВОЙ ИМТ</h2>
+    <p class="personal-sub">Введите несколько параметров, чтобы определить индекс массы тела и категорию веса.</p>
+
+    <div class="calc-box">
+      <form id="bmiForm" novalidate>
+        <div class="field">
+          <label>Пол</label>
+          <div class="gender-row">
+            <label class="gender-opt"><input type="radio" name="gender" value="Женщина" checked><span>Женщина</span></label>
+            <label class="gender-opt"><input type="radio" name="gender" value="Мужчина"><span>Мужчина</span></label>
+          </div>
+        </div>
+        <div class="field"><label for="age">Возраст</label><input type="number" id="age" name="age" min="10" max="100" required placeholder="напр. 34"></div>
+        <div class="field"><label for="height">Рост, см</label><input type="number" id="height" name="height" min="100" max="230" required placeholder="напр. 168" step="any"></div>
+        <div class="field"><label for="weight">Вес, кг</label><input type="number" id="weight" name="weight" min="30" max="300" required placeholder="напр. 82" step="any"></div>
+        <button class="btn btn-dark" type="submit">РАССЧИТАТЬ ИМТ <span class="arrow">→</span></button>
+      </form>
+
+      <p id="calcAnnounce" class="sr-only" role="status" aria-live="polite"></p>
+
+      <div class="calc-result" id="calcResult">
+        <strong id="bmiVal">—</strong>
+        <span class="cat" id="bmiCategory">—</span>
+        <p class="disclaimer">Этот показатель помогает оценить вашу весовую категорию, но не заменяет медицинскую диагностику.</p>
+      </div>
+
+      <div class="lead-block" id="leadBlock">
+        <h3>Хотите узнать, какой подход подойдёт именно вам?</h3>
+        <p>Оставьте контакт — специалист поможет разобраться с результатом и дальнейшими шагами.</p>
+        <form id="leadForm" novalidate>
+          <div class="field"><label for="lf-name">Ваше имя</label><input id="lf-name" name="name" type="text" required autocomplete="name"></div>
+          <div class="field"><label for="lf-phone">WhatsApp / телефон</label><input id="lf-phone" name="phone" type="tel" required autocomplete="tel" pattern="[0-9+\(\)\-\s]{7,}" title="Только цифры, пробелы, +, скобки и дефис, не короче 7 символов"></div>
+          <button class="btn btn-dark" type="submit">ПОЛУЧИТЬ РЕКОМЕНДАЦИЮ <span class="arrow">→</span></button>
+        </form>
+        <div class="lead-success" id="leadSuccess" role="status" aria-live="polite">
+          <h3>Заявка принята</h3>
+          <p>Специалист свяжется с вами для консультации и подбора программы.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="flogo">FATTOFF</div>
+  <a href="../index.html">Полная версия сайта</a>
+  <span class="sep">·</span>
+  <a href="https://wa.me/77066094641" target="_blank" rel="noopener">WhatsApp</a>
+</footer>
+
+<script>
+/* ---- BEFORE/AFTER SLIDER ---- */
+(function(){
+  const wrap = document.getElementById('baWrap');
+  const range = document.getElementById('baRange');
+  if(!wrap || !range) return;
+  function set(v){
+    wrap.style.setProperty('--ba-pos', v + '%');
+  }
+  range.addEventListener('input', ()=> set(range.value));
+  set(range.value);
+})();
+
+/* ---- BMI CALCULATOR ---- */
+/* Границы ВОЗ — дублируют bmiCategory() в ../index.html и bmiCategory_() в google-apps-script.gs.
+   Правишь диапазоны — поправь во всех трёх местах, иначе категория разъедется между сайтом и таблицей. */
+function bmiCategory(bmi){
+  if(bmi < 18.5) return 'Недостаточный вес';
+  if(bmi < 25) return 'Норма';
+  if(bmi < 30) return 'Избыточный вес';
+  if(bmi < 35) return 'Ожирение I степени';
+  if(bmi < 40) return 'Ожирение II степени';
+  return 'Ожирение III степени';
+}
+
+/* URL веб-приложения Google Apps Script — тот же вебхук и та же таблица «Заявки», что у основного сайта.
+   Поле "Источник" = адрес страницы, по нему видно, что заявка пришла с мини-лендинга (аналог UTM-метки). */
+const LEAD_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzRYL_VCPy6wWbbioJ96swLOXW4jmM3Dsv-oYzjxU2fmUKWs286lxr96cI17k21Xjpn/exec';
+
+const bmiForm = document.getElementById('bmiForm');
+const calcResult = document.getElementById('calcResult');
+const leadBlock = document.getElementById('leadBlock');
+let lastBmi = null, lastCategory = null;
+
+if(bmiForm) bmiForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!this.checkValidity()){ this.reportValidity(); return; }
+  const fd = new FormData(this);
+  const height = parseFloat(fd.get('height'));
+  const weight = parseFloat(fd.get('weight'));
+  const bmi = weight / Math.pow(height / 100, 2);
+  const category = bmiCategory(bmi);
+  lastBmi = bmi.toFixed(1);
+  lastCategory = category;
+
+  document.getElementById('bmiVal').textContent = lastBmi;
+  document.getElementById('bmiCategory').textContent = 'Категория: ' + category;
+  calcResult.style.display = 'block';
+  leadBlock.style.display = 'block';
+  document.getElementById('calcAnnounce').textContent = 'Ваш ИМТ — ' + lastBmi + '. Категория — ' + category;
+  calcResult.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+
+const leadForm = document.getElementById('leadForm');
+const leadSuccess = document.getElementById('leadSuccess');
+if(leadForm) leadForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!this.checkValidity()){ this.reportValidity(); return; }
+  const fd = new FormData(this);
+  const gender = (document.querySelector('input[name="gender"]:checked') || {}).value || '';
+  const age = document.getElementById('age').value;
+  const height = document.getElementById('height').value;
+  const weight = document.getElementById('weight').value;
+  const payload = {
+    name: fd.get('name') || '',
+    phone: fd.get('phone') || '',
+    age: age || '',
+    height: height || '',
+    weight: weight || '',
+    bmi: lastBmi || '',
+    category: lastCategory || '',
+    gender: gender,
+    source: location.href
+  };
+  if(LEAD_WEBHOOK_URL){
+    fetch(LEAD_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    }).catch(()=>{});
+  }
+  this.style.display = 'none';
+  leadSuccess.style.display = 'block';
+  leadSuccess.setAttribute('tabindex', '-1');
+  leadSuccess.focus();
+});
+
+/* ---- TRUST STRIP ACCORDION ---- */
+document.querySelectorAll('.trust-q').forEach((q, i)=>{
+  const a = q.nextElementSibling;
+  a.id = a.id || ('trust-a-' + (i + 1));
+  q.setAttribute('aria-controls', a.id);
+  function toggle(){
+    const isOpen = q.getAttribute('aria-expanded') === 'true';
+    a.hidden = isOpen;
+    q.setAttribute('aria-expanded', String(!isOpen));
+  }
+  q.addEventListener('click', toggle);
+  q.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+  });
+});
+</script>
+
+</body>
+</html>

@@ -16,7 +16,8 @@ var FIELDS = [
   { header: 'ИМТ', key: 'bmi' },
   { header: 'Степень', key: 'category' },
   { header: 'Город', key: 'city' },
-  { header: 'Источник', key: 'source' }
+  { header: 'Источник', key: 'source' },
+  { header: 'Пол', key: 'gender' } /* добавлено для мини-лендинга (mini/index.html) — в форме основного сайта этого поля нет, придёт пустым */
 ];
 
 function doPost(e) {
@@ -55,7 +56,7 @@ function doPost(e) {
        ошибка уже произошла при записи, сменой формата её не вылечить.
        ИМТ и Степень не трогаем: это не ввод клиента, а то, что посчитал сервер. */
     sheet.getRange(targetRow, 2, 1, 5).setNumberFormat('@'); // B:F — Имя, Телефон, Возраст, Рост, Вес
-    sheet.getRange(targetRow, 9, 1, 2).setNumberFormat('@'); // I:J — Город, Источник
+    sheet.getRange(targetRow, 9, 1, 3).setNumberFormat('@'); // I:K — Город, Источник, Пол
     range.setValues([row]);
 
     return ContentService.createTextOutput(JSON.stringify({ ok: true }))
