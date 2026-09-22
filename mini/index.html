@@ -69,50 +69,17 @@
   .proof h1{font-size:clamp(30px,7vw,40px); line-height:1.12; text-align:center;}
   .proof-sub{font-size:15.5px; opacity:0.82; text-align:center; max-width:36ch; margin:14px auto 0;}
 
-  .ba-wrap{position:relative; max-width:340px; margin:32px auto 0; border-radius:var(--radius-m); overflow:hidden; aspect-ratio:4/5; box-shadow:0 30px 60px rgba(0,0,0,0.4);}
-  .ba-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 15%; -webkit-user-drag:none; user-select:none;}
-  .ba-before{clip-path: inset(0 calc(100% - var(--ba-pos, 50%)) 0 0); z-index:2;}
-  .ba-tag{position:absolute; top:12px; z-index:3; font-size:11px; font-weight:700; letter-spacing:0.06em; background:rgba(0,0,0,0.45); padding:5px 10px; border-radius:20px;}
-  .ba-tag.before{left:12px;}
-  .ba-tag.after{right:12px;}
-  .ba-handle{
-    position:absolute; top:0; bottom:0; left:var(--ba-pos, 50%); width:0; z-index:4; pointer-events:none;
-    border-left:2px solid rgba(255,255,255,0.9); transform:translateX(-1px);
-  }
-  .ba-handle::after{
-    content:"‹ ›"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:38px; height:38px; border-radius:50%; background:var(--white); color:var(--green-deep);
-    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; letter-spacing:2px;
-    box-shadow:0 4px 14px rgba(0,0,0,0.3);
-  }
-  .ba-range{
-    position:absolute; inset:0; width:100%; height:100%; margin:0; z-index:5; opacity:0; cursor:ew-resize;
-    -webkit-appearance:none; appearance:none;
-    touch-action:pan-y; /* горизонтальный свайп по фото двигает шторку, вертикальный — скроллит страницу */
-  }
-  .ba-range::-webkit-slider-thumb{-webkit-appearance:none; width:40px; height:100%;}
-
-  /* Карусель кейсов: слайды переключаются кнопками/точками, а не свайпом —
-     свайп конфликтовал бы с перетаскиванием шторки внутри слайда. */
-  .ba-slide{display:none;}
-  .ba-slide.is-active{display:block;}
-  .ba-nav-row{display:flex; align-items:center; justify-content:center; gap:6px; margin:14px auto 0; max-width:340px;}
-  .ba-nav{
-    width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.3);
-    background:rgba(255,255,255,0.08); color:var(--white); font-size:22px; line-height:1; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; font-family:inherit; transition:background .15s ease;
-  }
-  .ba-nav:hover{background:rgba(255,255,255,0.18);}
-  .ba-dots{display:flex;}
-  /* кнопка 24×24 (минимум для тача), видимая точка 8×8 внутри */
-  .ba-dot{width:24px; height:24px; position:relative; background:none; border:none; padding:0; cursor:pointer;}
-  .ba-dot::before{content:""; position:absolute; inset:8px; border-radius:50%; background:rgba(255,255,255,0.35);}
-  .ba-dot.active::before{background:var(--white);}
-  .ba-counter{font-size:12px; opacity:0.6; min-width:44px; text-align:center; font-variant-numeric:tabular-nums;}
-  .ba-caption{max-width:340px; margin:18px auto 0; text-align:center;}
-  .ba-name{font-weight:700; font-size:15px;}
-  .ba-stat{font-family:'Newsreader',serif; font-style:italic; color:var(--blue-cold); font-size:14px; margin-top:2px;}
-  .ba-quote{font-size:13.5px; opacity:0.78; margin-top:10px; line-height:1.5;}
+  /* Карточки недель — один в один с основного сайта (index.html), просто на тёмном фоне блока. */
+  .timeline{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:32px;}
+  @media(max-width:360px){ .timeline{grid-template-columns:1fr; max-width:260px; margin-left:auto; margin-right:auto;} }
+  .tl-card{background:var(--white); border-radius:var(--radius-m); overflow:hidden; color:var(--graphite); text-align:left;}
+  .tl-card .ph{aspect-ratio:400/692; border-radius:0;}
+  .tl-card .ph img{object-position:top;}
+  .tl-body{padding:14px;}
+  .tl-week{font-family:'Newsreader',serif; font-style:italic; color:var(--green-mid); font-size:13px;}
+  .tl-body h3{margin:4px 0 6px; font-size:14.5px; font-weight:700; letter-spacing:-0.01em;}
+  .tl-body ul{padding-left:16px; margin:8px 0 0; font-size:12px; opacity:0.8;}
+  .tl-loss{display:inline-block; margin-top:8px; font-weight:800; font-size:14px; color:var(--green-deep);}
 
   .proof-cta{max-width:280px; margin:32px auto 0;}
 
@@ -210,58 +177,43 @@
     <h1>РЕЗУЛЬТАТЫ,<br>КОТОРЫЕ ВИДНО</h1>
     <p class="proof-sub">Реальные истории людей, которые уже прошли свой путь к изменению тела.</p>
 
-    <div class="ba-carousel" id="baCarousel" aria-roledescription="карусель" aria-label="Фото до и после">
-      <div class="ba-slide is-active">
-        <div class="ba-wrap">
-          <img class="ba-img ba-after" src="../img/founder-transform-3-after.jpg" alt="После" width="1000" height="888" fetchpriority="high">
-          <img class="ba-img ba-before" src="../img/founder-transform-3-before.jpg" alt="До" width="1000" height="888" fetchpriority="high">
-          <span class="ba-tag before">ДО</span>
-          <span class="ba-tag after">ПОСЛЕ</span>
-          <div class="ba-handle"></div>
-          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+    <div class="timeline">
+      <div class="tl-card">
+        <div class="ph"><img src="../img/week1.jpg" alt="Неделя 1" width="404" height="692" decoding="async"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 1</span>
+          <h3>Перестройка организма на активное жиросжигание</h3>
+          <span class="tl-loss">−2 кг</span>
+          <ul><li>снижение аппетита</li><li>снижение чувства голода</li></ul>
         </div>
       </div>
-      <div class="ba-slide">
-        <div class="ba-wrap">
-          <img class="ba-img ba-after" src="../img/founder-transform-4-after.jpg" alt="После" width="1000" height="888" fetchpriority="low" decoding="async">
-          <img class="ba-img ba-before" src="../img/founder-transform-4-before.jpg" alt="До" width="1000" height="888" fetchpriority="low" decoding="async">
-          <span class="ba-tag before">ДО</span>
-          <span class="ba-tag after">ПОСЛЕ</span>
-          <div class="ba-handle"></div>
-          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+      <div class="tl-card">
+        <div class="ph"><img src="../img/week2.jpg" alt="Неделя 2" width="391" height="692" decoding="async"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 2</span>
+          <h3>Запуск жиросжигания в области живота</h3>
+          <span class="tl-loss">−4 кг</span>
+          <ul><li>вес начинает уходить быстро</li><li>появляется много энергии</li><li>улучшается настроение</li></ul>
         </div>
       </div>
-      <div class="ba-slide">
-        <div class="ba-wrap">
-          <img class="ba-img ba-after" src="../img/founder-transform-1-after.jpg" alt="После" width="1000" height="888" fetchpriority="low" decoding="async">
-          <img class="ba-img ba-before" src="../img/founder-transform-1-before.jpg" alt="До" width="1000" height="888" fetchpriority="low" decoding="async">
-          <span class="ba-tag before">ДО</span>
-          <span class="ba-tag after">ПОСЛЕ</span>
-          <div class="ba-handle"></div>
-          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+      <div class="tl-card">
+        <div class="ph"><img src="../img/week3.jpg" alt="Неделя 3" width="396" height="692" decoding="async"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 3</span>
+          <h3>Активное жиросжигание во всех участках тела</h3>
+          <span class="tl-loss">−7 кг</span>
+          <ul><li>заметные результаты каждый день</li><li>уходит жир с проблемных мест</li></ul>
         </div>
       </div>
-      <div class="ba-slide">
-        <div class="ba-wrap">
-          <img class="ba-img ba-after" src="../img/founder-transform-5-after.jpg" alt="После" width="1000" height="888" fetchpriority="low" decoding="async">
-          <img class="ba-img ba-before" src="../img/founder-transform-5-before.jpg" alt="До" width="1000" height="888" fetchpriority="low" decoding="async">
-          <span class="ba-tag before">ДО</span>
-          <span class="ba-tag after">ПОСЛЕ</span>
-          <div class="ba-handle"></div>
-          <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Перетащите, чтобы сравнить фото до и после">
+      <div class="tl-card">
+        <div class="ph"><img src="../img/week4.jpg" alt="Неделя 4" width="400" height="692" decoding="async"></div>
+        <div class="tl-body">
+          <span class="tl-week">Неделя 4</span>
+          <h3>Заметная стройность</h3>
+          <span class="tl-loss">−10 кг</span>
+          <ul><li>очерчивание талии</li><li>похудение в лице</li><li>здоровые пищевые привычки</li></ul>
         </div>
       </div>
-      <div class="ba-nav-row">
-        <button class="ba-nav" id="baPrev" type="button" aria-label="Предыдущее фото">‹</button>
-        <div class="ba-dots" id="baDots"></div>
-        <span class="ba-counter" id="baCounter" aria-live="polite"></span>
-        <button class="ba-nav" id="baNext" type="button" aria-label="Следующее фото">›</button>
-      </div>
-    </div>
-    <div class="ba-caption">
-      <div class="ba-name">Аружан Мақсатқызы</div>
-      <div class="ba-stat">−32 кг за 3 месяца</div>
-      <p class="ba-quote">«Я прошла этот путь сама. Знаю, каково это — начинать с большого количества лишнего веса и постепенно менять отношение к себе».</p>
     </div>
 
     <div class="proof-cta"><a href="#product" class="btn btn-light">КАК РАБОТАЕТ FATTOFF <span class="arrow">→</span></a></div>
@@ -377,59 +329,10 @@
 
 <footer>
   <div class="flogo">FATTOFF</div>
-  <a href="../index.html">Полная версия сайта</a>
-  <span class="sep">·</span>
   <a href="https://wa.me/77066094641" target="_blank" rel="noopener">WhatsApp</a>
 </footer>
 
 <script>
-/* ---- BEFORE/AFTER: шторка в каждом слайде + карусель кейсов ---- */
-(function(){
-  const slides = Array.from(document.querySelectorAll('.ba-slide'));
-  if(!slides.length) return;
-
-  /* у каждого слайда своя независимая шторка — позиция не сбрасывается при переключении */
-  slides.forEach(slide=>{
-    const wrap = slide.querySelector('.ba-wrap');
-    const range = slide.querySelector('.ba-range');
-    if(!wrap || !range) return;
-    const set = v => wrap.style.setProperty('--ba-pos', v + '%');
-    range.addEventListener('input', ()=> set(range.value));
-    set(range.value);
-  });
-
-  const prev = document.getElementById('baPrev');
-  const next = document.getElementById('baNext');
-  const dotsWrap = document.getElementById('baDots');
-  const counter = document.getElementById('baCounter');
-  const navRow = document.querySelector('.ba-nav-row');
-  if(slides.length < 2){ if(navRow) navRow.hidden = true; return; }
-
-  let index = 0;
-  const dots = slides.map((_, i)=>{
-    const d = document.createElement('button');
-    d.type = 'button';
-    d.className = 'ba-dot';
-    d.setAttribute('aria-label', 'Фото ' + (i + 1) + ' из ' + slides.length);
-    d.addEventListener('click', ()=> go(i));
-    dotsWrap.appendChild(d);
-    return d;
-  });
-
-  function go(i){
-    index = (i + slides.length) % slides.length;
-    slides.forEach((s, k)=> s.classList.toggle('is-active', k === index));
-    dots.forEach((d, k)=>{
-      d.classList.toggle('active', k === index);
-      if(k === index) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
-    });
-    if(counter) counter.textContent = (index + 1) + ' / ' + slides.length;
-  }
-  prev.addEventListener('click', ()=> go(index - 1));
-  next.addEventListener('click', ()=> go(index + 1));
-  go(0);
-})();
-
 /* ---- BMI CALCULATOR ---- */
 /* Границы ВОЗ — дублируют bmiCategory() в ../index.html и bmiCategory_() в google-apps-script.gs.
    Правишь диапазоны — поправь во всех трёх местах, иначе категория разъедется между сайтом и таблицей. */
